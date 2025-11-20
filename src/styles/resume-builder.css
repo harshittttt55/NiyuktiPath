@@ -1,0 +1,84 @@
+:root {
+  --primary: #4361ee;
+  --secondary: #3f37c9;
+  --accent: #4cc9f0;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HERO */
+.resume-hero {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+}
+
+.resume-hero h1 {
+  font-size: 2.6rem;
+}
+
+/* FORM */
+.resume-form {
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius);
+  max-width: 700px;
+  margin: auto;
+  box-shadow: var(--shadow);
+}
+
+.form-title {
+  font-size: 1.6rem;
+  margin: 25px 0 15px;
+  color: var(--primary);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid #ccc;
+}
+
+textarea {
+  min-height: 120px;
+}
+
+.preview-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  padding: 14px;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.preview-btn:hover {
+  background: var(--secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .resume-form {
+    padding: 25px;
+  }
+}

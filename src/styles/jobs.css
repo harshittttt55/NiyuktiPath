@@ -1,0 +1,170 @@
+:root {
+  --primary: #4361ee;
+  --secondary: #3f37c9;
+  --accent: #4cc9f0;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HERO */
+.jobs-hero {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+}
+
+.jobs-hero h1 {
+  font-size: 2.8rem;
+}
+
+.jobs-hero p {
+  opacity: 0.9;
+}
+
+/* Filters */
+.filter-section {
+  background: var(--light);
+  padding: 40px 0;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.filter-group select,
+.filter-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+}
+
+.filter-btn {
+  background: var(--primary);
+  color: white;
+  padding: 12px 22px;
+  border-radius: var(--radius);
+  height: fit-content;
+  margin-top: auto;
+}
+
+.filter-btn:hover {
+  background: var(--secondary);
+}
+
+/* Job Listings */
+.job-listings {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 2rem;
+}
+
+.job-card {
+  background: white;
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: 0.3s;
+}
+
+.job-card:hover {
+  transform: translateY(-8px);
+}
+
+.job-title {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.company-name {
+  color: #555;
+}
+
+.job-description {
+  margin: 15px 0;
+  color: #666;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.job-tag {
+  background: var(--light);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.job-meta {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #666;
+}
+
+.job-meta-item i {
+  color: var(--primary);
+  margin-right: 6px;
+}
+
+.apply-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+}
+
+.apply-btn:hover {
+  background: var(--secondary);
+}
+
+/* CTA */
+.jobs-cta {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  text-align: center;
+  margin-top: 60px;
+  padding: 70px 0;
+  border-radius: var(--radius);
+}
+
+.cta-btn {
+  margin-top: 20px;
+  background: white;
+  color: var(--primary);
+  padding: 12px 30px;
+  border-radius: var(--radius);
+}
+
+.cta-btn:hover {
+  background: var(--accent);
+  color: var(--dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .jobs-hero h1 {
+    font-size: 2.2rem;
+  }
+}

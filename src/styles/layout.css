@@ -1,0 +1,20 @@
+.layout {
+  display: flex;
+}
+
+.layout-content {
+  margin-left: 70px;  /* collapsed sidebar width */
+  width: 100%;
+  transition: 0.3s;
+  padding-top: 20px;
+}
+
+.sidebar.expanded ~ .layout-content {
+  margin-left: 240px; /* expanded width */
+}
+
+@media (max-width: 768px) {
+  .layout-content {
+    margin-left: 60px;
+  }
+}

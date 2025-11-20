@@ -1,0 +1,87 @@
+:root {
+  --primary: #4361ee;
+  --secondary: #3f37c9;
+  --accent: #4cc9f0;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HERO */
+.postjob-hero {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+}
+
+.postjob-hero h1 {
+  font-size: 2.6rem;
+}
+
+/* FORM */
+.postjob-form {
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 700px;
+  margin: auto;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: var(--primary);
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+textarea {
+  min-height: 130px;
+}
+
+.submit-btn {
+  background: var(--primary);
+  color: white;
+  padding: 14px 26px;
+  border-radius: var(--radius);
+  width: 100%;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: var(--secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .postjob-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .postjob-form {
+    padding: 25px;
+  }
+}

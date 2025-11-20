@@ -1,0 +1,191 @@
+:root {
+  --primary: #4361ee;
+  --secondary: #3f37c9;
+  --accent: #4cc9f0;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* HERO */
+.internship-hero {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 80px 0;
+  text-align: center;
+  color: white;
+}
+
+.internship-hero h1 {
+  font-size: 2.8rem;
+}
+
+/* FILTERS */
+.filter-section {
+  background: var(--light);
+  padding: 40px 0;
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.filter-group select,
+.filter-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid #ddd;
+}
+
+.filter-btn {
+  background: var(--primary);
+  color: white;
+  padding: 12px 22px;
+  border-radius: var(--radius);
+}
+
+.filter-btn:hover {
+  background: var(--secondary);
+}
+
+/* INTERNSHIP CARDS */
+.internship-listings {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 2rem;
+}
+
+.internship-card {
+  background: white;
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: 0.3s;
+}
+
+.internship-card:hover {
+  transform: translateY(-8px);
+}
+
+.internship-title {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.company-name {
+  color: #555;
+}
+
+.internship-description {
+  margin: 10px 0;
+  color: #666;
+}
+
+.internship-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.internship-tag {
+  background: var(--light);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+.internship-meta {
+  margin-top: 15px;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #666;
+}
+
+.internship-meta i {
+  color: var(--primary);
+  margin-right: 6px;
+}
+
+.view-btn {
+  width: 100%;
+  background: var(--primary);
+  color: white;
+}
+
+.view-btn:hover {
+  background: var(--secondary);
+}
+
+/* FAQ */
+.faq-section {
+  padding: 80px 0;
+}
+
+.faq-item {
+  background: var(--light);
+  border-radius: var(--radius);
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: var(--shadow);
+}
+
+.faq-question {
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.faq-answer {
+  display: none;
+  margin-top: 10px;
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+}
+
+/* CTA */
+.internship-cta {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  text-align: center;
+  margin-top: 60px;
+  padding: 70px 0;
+  border-radius: var(--radius);
+}
+
+.cta-btn {
+  background: white;
+  color: var(--primary);
+  padding: 12px 26px;
+  border-radius: var(--radius);
+}
+
+.cta-btn:hover {
+  background: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .internship-hero h1 {
+    font-size: 2.2rem;
+  }
+}
