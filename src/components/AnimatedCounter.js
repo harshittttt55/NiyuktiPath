@@ -16,7 +16,7 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '' }) => {
     requestAnimationFrame(animate);
   }, [end, duration]);
 
-  return <div className="stat-number">{count}{suffix}</div>;
+  return <span className="stat-number">{count}{suffix}</span>;
 };
 
 export default AnimatedCounter;
