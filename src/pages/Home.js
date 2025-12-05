@@ -829,7 +829,7 @@ const Home = () => {
         </section>
 
         {/* FAQ SECTION */}
-        <section className="section faq-section" aria-labelledby="faq">
+        {/* <section className="section faq-section" aria-labelledby="faq">
           <div className="container">
             <SectionTitle
               title="Have Questions?"
@@ -848,7 +848,7 @@ const Home = () => {
               ))}
             </motion.div>
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   );
