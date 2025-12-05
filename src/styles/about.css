@@ -79,7 +79,7 @@
 }
 
 .split-image {
-  background: url("/images/about-banner.jpg") center/cover;
+  background: url("/public/images/about-banner.jpg") center/cover;
   height: 350px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);

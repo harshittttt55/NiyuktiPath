@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import '../styles/home.css';
@@ -7,7 +7,18 @@ import Navbar from '../components/Navbar';
 import AnimatedCounter from '../components/AnimatedCounter';
 import DeviceShowcase from "../components/DeviceShowcase";
 
-// Assets
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  PlaneGeometry,
+  Mesh,
+  ShaderMaterial,
+  Vector2,
+  Clock,
+} from 'three';
+
+// Assets (kept for future use)
 const PHONE_MOCKUP_URL = '/images/phone-mockup.png';
 const COMPANY_LOGOS = [
   '/images/logo-google.png',
@@ -20,7 +31,11 @@ const COMPANY_LOGOS = [
 // Animation Variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] },
+  },
 };
 
 const stagger = {
@@ -29,6 +44,189 @@ const stagger = {
       staggerChildren: 0.15,
     },
   },
+};
+
+/**
+ * Premium interactive floating-lines background for the hero
+ * Uses Three.js + a custom shader + mouse parallax.
+ */
+const FloatingLinesHero = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const scene = new Scene();
+    const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    camera.position.z = 1;
+
+    const renderer = new WebGLRenderer({
+      antialias: true,
+      alpha: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x000000, 0); // transparent, CSS gradient stays visible
+    containerRef.current.appendChild(renderer.domElement);
+
+    const uniforms = {
+      uTime: { value: 0 },
+      uResolution: { value: new Vector2(1, 1) },
+      uMouse: { value: new Vector2(0.5, 0.5) },
+    };
+
+    const vertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+      }
+    `;
+
+    // Neon, layered waves + subtle noise + mouse parallax
+    const fragmentShader = `
+      precision highp float;
+      varying vec2 vUv;
+
+      uniform float uTime;
+      uniform vec2 uResolution;
+      uniform vec2 uMouse;
+
+      // Brand-ish colors
+      vec3 col1 = vec3(124.0/255.0, 93.0/255.0, 250.0/255.0);
+      vec3 col2 = vec3(0.0/255.0, 181.0/255.0, 216.0/255.0);
+      vec3 col3 = vec3(76.0/255.0, 201.0/255.0, 240.0/255.0);
+
+      // simple hash noise
+      float hash(vec2 p) {
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+      }
+
+      float noise(vec2 p){
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+        vec2 u = f*f*(3.0 - 2.0*f);
+        return mix(a, b, u.x) +
+               (c - a)*u.y*(1.0 - u.x) +
+               (d - b)*u.x*u.y;
+      }
+
+      void main() {
+        // Normalized coords (-1..1) center
+        vec2 uv = vUv;
+        vec2 p = (uv - 0.5) * 2.0;
+        p.x *= uResolution.x / uResolution.y;
+
+        // Mouse parallax
+        vec2 m = (uMouse - 0.5) * 2.0;
+        p.x += m.x * 0.15;
+        p.y += m.y * 0.05;
+
+        // Base gradient background (very soft, so it mixes with CSS gradient)
+        float grad = smoothstep(-0.8, 0.8, p.y + 0.2);
+        vec3 baseCol = mix(col1 * 0.25, col2 * 0.35, grad);
+
+        // 3 layered flowing lines
+        float t = uTime * 0.6;
+
+        float line1 = abs(p.y - 0.25 * sin(p.x * 1.8 + t * 1.6));
+        float line2 = abs(p.y + 0.15 * sin(p.x * 2.4 - t * 1.1));
+        float line3 = abs(p.y - 0.05 * sin(p.x * 3.2 + t * 0.7 + 2.0));
+
+        float width1 = 0.045;
+        float width2 = 0.04;
+        float width3 = 0.035;
+
+        float glow1 = exp(-line1 * 16.0) * 1.2;
+        float glow2 = exp(-line2 * 16.0);
+        float glow3 = exp(-line3 * 18.0);
+
+        // Noise along lines for energy feel
+        float n = noise(p * 4.0 + t);
+        glow1 *= 0.8 + 0.5 * n;
+        glow2 *= 0.8 + 0.5 * n;
+        glow3 *= 0.8 + 0.5 * n;
+
+        vec3 c1 = col1 * glow1;
+        vec3 c2 = col2 * glow2;
+        vec3 c3 = col3 * glow3;
+
+        // Combine
+        vec3 color = baseCol;
+        color += c1;
+        color += c2;
+        color += c3;
+
+        // Subtle vignette
+        float r = length(p);
+        float vignette = smoothstep(1.2, 0.2, r);
+        color *= vignette;
+
+        gl_FragColor = vec4(color, 0.9);
+      }
+    `;
+
+    const material = new ShaderMaterial({
+      uniforms,
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+    });
+
+    const geometry = new PlaneGeometry(2, 2);
+    const mesh = new Mesh(geometry, material);
+    scene.add(mesh);
+
+    const clock = new Clock();
+
+    const resize = () => {
+      if (!containerRef.current) return;
+      const { clientWidth, clientHeight } = containerRef.current;
+      const width = clientWidth || 1;
+      const height = clientHeight || 1;
+      renderer.setSize(width, height, false);
+      uniforms.uResolution.value.set(width, height);
+    };
+
+    resize();
+
+    const handlePointerMove = (e) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = 1.0 - (e.clientY - rect.top) / rect.height;
+      uniforms.uMouse.value.set(x, y);
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(containerRef.current);
+
+    let rafId;
+    const renderLoop = () => {
+      uniforms.uTime.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(renderLoop);
+    };
+    renderLoop();
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('pointermove', handlePointerMove);
+      resizeObserver.disconnect();
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+      if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+    };
+  }, []);
+
+  return <div ref={containerRef} className="floating-lines-bg" />;
 };
 
 // Reusable FeatureCard component
@@ -87,7 +285,9 @@ const SolutionCard = ({ title, detail, image }) => (
   <motion.article
     className="solution-card"
     variants={fadeInUp}
-    style={{ backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.4)), url(${image})` }}
+    style={{
+      backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.4)), url(${image})`,
+    }}
   >
     <h4>{title}</h4>
     <p>{detail}</p>
@@ -107,51 +307,37 @@ const TestimonialCard = ({ quote, author, role }) => (
   </motion.div>
 );
 
+// FAQ Item Component
+const FAQItem = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-// FAQ Item Component — clean + animated + reliable
-// const FAQItem = ({ question, answer }) => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   return (
-//     <motion.div
-//       className="faq-item"
-//       variants={fadeInUp}
-//       initial={false}
-//       animate={{ borderColor: isOpen ? "var(--primary)" : "#e5e7eb" }}
-//     >
-//       <button className="faq-question" onClick={() => setIsOpen(!isOpen)}>
-//         <h4>{question}</h4>
-//         <motion.span
-//           animate={{ rotate: isOpen ? 45 : 0 }}
-//           transition={{ duration: 0.25 }}
-//           className="faq-toggle"
-//         >
-//           +
-//         </motion.span>
-//       </button>
-
-//       <motion.div
-//         animate={{
-//           height: isOpen ? "auto" : 0,
-//           opacity: isOpen ? 1 : 0,
-//           marginTop: isOpen ? 12 : 0
-//         }}
-//         transition={{ duration: 0.3 }}
-//         className="faq-answer"
-//       >
-//         <p>{answer}</p>
-//       </motion.div>
-//     </motion.div>
-//   );
-// };
-
-
-// const stats = [
-//   { value: 7000, suffix: 'k+', label: 'Active Jobs' },
-//   { value: 1200, suffix: 'k+', label: 'Companies' },
-//   { value: 95, suffix: '%', label: 'Success Rate' },
-// ];
-
+  return (
+    <motion.div className={`faq-item ${isOpen ? 'open' : ''}`} variants={fadeInUp}>
+      <button
+        className="faq-question"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        type="button"
+      >
+        <h4>{question}</h4>
+        <motion.span
+          className="faq-toggle"
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          +
+        </motion.span>
+      </button>
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
+        className="faq-answer"
+      >
+        <p>{answer}</p>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const features = [
   { title: 'Dual dashboards', description: 'Switch between seeker insights and provider controls in a single click.', icon: '🧭' },
@@ -165,19 +351,16 @@ const pulseMoments = [
     spark: 'Live now · 12 recruiters online',
     title: 'Realtime chat requests',
     detail: '34 job seekers pinged HR this hour; 6 providers are preparing responses.',
-    // metric: '6 confirmations pending',
   },
   {
     spark: 'ATS insights · updated 2m ago',
     title: 'ATS examiner running',
     detail: 'Candidates refreshed resumes for 210 roles and bumped match scores by 18% on average.',
-    // metric: 'Preview recommendations →',
   },
   {
     spark: 'Opportunity pulse · curated for you',
     title: 'Trending routes',
     detail: 'Product, Design, and GTM squads reopened 98 roles and added 42 internship slots.',
-    // metric: '+12 new companies invited',
   },
 ];
 
@@ -275,15 +458,18 @@ const heroFilters = ['Remote friendly', 'Hybrid-ready', 'ATS proof', 'Early-care
 const faqs = [
   {
     question: 'How does the dual experience work?',
-    answer: 'During signup or in the dashboard you can toggle between job seeker and job provider views. Each view surfaces tailored tools, dashboards, and CTAs for the role you are operating in.',
+    answer:
+      'During signup or in the dashboard you can toggle between job seeker and job provider views. Each view surfaces tailored tools, dashboards, and CTAs for the role you are operating in.',
   },
   {
     question: 'What is the chat flow between seekers and providers?',
-    answer: 'After clicking Chat on a job, providers get a request checklist. Once they accept, both parties enter a half-screen chat pane and can continue the conversation without leaving the platform.',
+    answer:
+      'After clicking Chat on a job, providers get a request checklist. Once they accept, both parties enter a half-screen chat pane and can continue the conversation without leaving the platform.',
   },
   {
     question: 'How are ATS scores and jobs synced?',
-    answer: 'Every submission is run through our ATS analyzer. Providers see applicants ordered by score, and seekers get personalized tips before they apply. You can also re-run scans after updating your resume or job filters.',
+    answer:
+      'Every submission is run through our ATS analyzer. Providers see applicants ordered by score, and seekers get personalized tips before they apply. You can also re-run scans after updating your resume or job filters.',
   },
 ];
 
@@ -307,12 +493,14 @@ const solutionCards = [
 
 const testimonials = [
   {
-    quote: '“We cut recruitment cycle time in half. Live chat and ATS filtering keeps us organised and candidate-first.”',
+    quote:
+      '“We cut recruitment cycle time in half. Live chat and ATS filtering keeps us organised and candidate-first.”',
     author: 'Priya Das',
     role: 'Head of Talent, AuroraLabs',
   },
   {
-    quote: '“Job seekers feel seen. The customizable workflow helped us highlight internships that actually matched their goals.”',
+    quote:
+      '“Job seekers feel seen. The customizable workflow helped us highlight internships that actually matched their goals.”',
     author: 'Rohan Mehta',
     role: 'Lead Seeker Experience',
   },
@@ -371,6 +559,9 @@ const Home = () => {
       <main className="home-page">
         {/* HERO SECTION */}
         <header className="home-hero" role="banner">
+          {/* Floating animated background */}
+          <FloatingLinesHero />
+
           <div className="container hero-grid">
             <motion.div className="hero-left" initial="hidden" animate="visible" variants={stagger}>
               <motion.h1 className="hero-title" variants={fadeInUp}>
@@ -378,7 +569,8 @@ const Home = () => {
                 <span>Faster.</span>
               </motion.h1>
               <motion.p className="hero-sub" variants={fadeInUp}>
-                NiyuktiPath is your interactive career launchpad—bridging job seekers and providers with curated opportunities, ATS intelligence, and live conversations.
+                NiyuktiPath is your interactive career launchpad—bridging job seekers and providers with curated
+                opportunities, ATS intelligence, and live conversations.
               </motion.p>
               <motion.div className="hero-ctas" variants={fadeInUp}>
                 <Link to="/jobs" className="btn btn-primary">
@@ -388,6 +580,7 @@ const Home = () => {
                   Get Started
                 </Link>
               </motion.div>
+              {/* Stats block kept commented for now */}
               {/* <motion.div className="hero-stats" variants={stagger}>
                 {stats.map((stat, index) => (
                   <motion.div key={index} className="stat" variants={fadeInUp}>
@@ -399,6 +592,7 @@ const Home = () => {
                 ))}
               </motion.div> */}
             </motion.div>
+
             <motion.div className="hero-right" initial="hidden" animate="visible" variants={stagger}>
               <div className="hero-panel">
                 <p className="hero-panel-label">Interactive Workbench</p>
@@ -433,23 +627,12 @@ const Home = () => {
                     <button
                       key={chip}
                       className="hero-chip-btn"
-                      onClick={() => console.log("Clicked:", chip)}
+                      onClick={() => console.log('Clicked:', chip)}
                     >
                       {chip}
                     </button>
                   ))}
                 </div>
-                {/* <p className="hero-search-result">{searchMessage}</p> */}
-                {/* <div className="hero-metrics">
-                  <div>
-                    <strong>12 min</strong>
-                    <span>Avg. recruiter reply</span>
-                  </div>
-                  <div>
-                    <strong>4.8 / 5</strong>
-                    <span>Candidate satisfaction</span>
-                  </div>
-                </div> */}
               </div>
             </motion.div>
           </div>
@@ -499,7 +682,6 @@ const Home = () => {
                     Open chat console
                   </Link>
                 </div>
-                <p className="pulse-metric">{pulseMoments[activePulse].metric}</p>
               </motion.div>
               <div className="pulse-indicators">
                 {pulseMoments.map((moment, index) => (
@@ -517,12 +699,9 @@ const Home = () => {
             </div>
           </div>
         </section>
-        
-        {/* Phone component added here */}
+
+        {/* Phone component */}
         <DeviceShowcase />
-
-
-        {/* FEATURED COMPANIES & OPPORTUNITIES sections are commented out intentionally */}
 
         {/* RESOURCE SECTION */}
         <section className="section resource-section" aria-labelledby="resources">
@@ -649,7 +828,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* FAQ SECTION
+        {/* FAQ SECTION */}
         <section className="section faq-section" aria-labelledby="faq">
           <div className="container">
             <SectionTitle
@@ -657,18 +836,19 @@ const Home = () => {
               subtitle="We've got answers. Here are some of the most common queries."
               id="faq"
             />
-
-            <div className="faq-grid">
+            <motion.div
+              className="faq-grid"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={stagger}
+            >
               {faqs.map((faq) => (
-                <FAQItem
-                  key={faq.question}
-                  question={faq.question}
-                  answer={faq.answer}
-                />
+                <FAQItem key={faq.question} question={faq.question} answer={faq.answer} />
               ))}
-            </div>
+            </motion.div>
           </div>
-        </section> */}
+        </section>
       </main>
     </>
   );

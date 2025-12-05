@@ -11,6 +11,40 @@
   --shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
   --transition: 0.3s ease;
 }
+/* Floating Background Container */
+.floating-lines-bg {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* HERO layered layout — required */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft overlay tint for readability (optional but recommended) */
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.14), transparent),
+              linear-gradient(to bottom, rgba(0,0,0,0.2), transparent 60%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Ensure text/UI stays above animation layer */
+.home-hero .container {
+  position: relative;
+  z-index: 2;
+}
 
 /* --- HERO SECTION --- */
 .home-hero {
