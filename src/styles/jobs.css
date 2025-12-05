@@ -1,142 +1,70 @@
 :root {
   --primary: #4361ee;
   --secondary: #3f37c9;
-  --accent: #4cc9f0;
-  --dark: #212529;
-  --light: #f8f9fa;
+  --light: #ffffff;
   --radius: 12px;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* HERO */
+/* Hero */
 .jobs-hero {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   padding: 80px 0;
   text-align: center;
-  color: white;
+  color: var(--light);
 }
 
 .jobs-hero h1 {
-  font-size: 2.8rem;
-}
-
-.jobs-hero p {
-  opacity: 0.9;
+  font-size: 2.6rem;
+  margin-bottom: 10px;
 }
 
 /* Filters */
 .filter-section {
-  background: var(--light);
-  padding: 40px 0;
+  background: #f6f8fc;
+  padding: 25px 0;
 }
 
 .filter-form {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .filter-group {
   flex: 1;
-  min-width: 220px;
+  min-width: 230px;
 }
 
 .filter-group label {
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   display: block;
 }
 
 .filter-group select,
 .filter-group input {
-  width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
   border-radius: var(--radius);
+  border: 1px solid #ccc;
+  width: 100%;
 }
 
 .filter-btn {
   background: var(--primary);
   color: white;
-  padding: 12px 22px;
   border-radius: var(--radius);
-  height: fit-content;
+  padding: 12px 22px;
   margin-top: auto;
+  height: 53px;
 }
 
-.filter-btn:hover {
-  background: var(--secondary);
-}
-
-/* Job Listings */
+/* Jobs grid */
 .job-listings {
   margin-top: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 2rem;
-}
-
-.job-card {
-  background: white;
-  padding: 25px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  transition: 0.3s;
-}
-
-.job-card:hover {
-  transform: translateY(-8px);
-}
-
-.job-title {
-  font-size: 1.4rem;
-  color: var(--primary);
-}
-
-.company-name {
-  color: #555;
-}
-
-.job-description {
-  margin: 15px 0;
-  color: #666;
-}
-
-.job-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.job-tag {
-  background: var(--light);
-  color: var(--primary);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-}
-
-.job-meta {
-  margin-top: 15px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  color: #666;
-}
-
-.job-meta-item i {
-  color: var(--primary);
-  margin-right: 6px;
-}
-
-.apply-btn {
-  width: 100%;
-  background: var(--primary);
-  color: white;
-}
-
-.apply-btn:hover {
-  background: var(--secondary);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
 }
 
 /* CTA */
@@ -144,27 +72,79 @@
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   text-align: center;
-  margin-top: 60px;
   padding: 70px 0;
   border-radius: var(--radius);
+  margin-top: 60px;
 }
 
 .cta-btn {
-  margin-top: 20px;
+  margin-top: 12px;
+  padding: 12px 28px;
   background: white;
   color: var(--primary);
-  padding: 12px 30px;
   border-radius: var(--radius);
 }
-
 .cta-btn:hover {
-  background: var(--accent);
-  color: var(--dark);
+  background: #4cc9f0;
+  color: black;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .jobs-hero h1 {
-    font-size: 2.2rem;
-  }
+/* FAQ Section */
+.faq-section {
+  padding: 70px 20px;
+  background: var(--light);
 }
+
+.faq-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 35px;
+}
+
+/* FAQ items */
+.faq-list {
+  max-width: 750px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.faq-item {
+  background: black;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.faq-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.faq-item summary {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+}
+
+.faq-item p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+[data-theme="dark"] .faq-item summary{
+  color: #f0f0f0;
+}
+
+[data-theme="dark"] .faq-item p{
+  color: #ccc;
+}
+  

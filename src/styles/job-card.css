@@ -1,46 +1,75 @@
-.job-card {
+.job-card-template {
   background: #ffffff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: 0.3s;
+  padding: 22px 24px;
+  border-radius: 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  transition: 0.25s ease;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.job-card:hover {
+.job-card-template:hover {
   transform: translateY(-6px);
+  border-color: #4361ee;
 }
 
 .job-title {
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   color: #4361ee;
+  font-weight: 600;
 }
 
 .company-name {
+  font-size: 0.9rem;
   color: #666;
-  margin-bottom: 10px;
+  margin-top: 2px;
 }
 
+.job-desc {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Tag Chips */
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.job-tag {
+  background: rgba(67, 97, 238, 0.12);
+  color: #4361ee;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+/* Meta Row */
 .job-meta {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
-  color: #555;
-  margin-bottom: 15px;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #444;
 }
 
 .job-meta svg {
+  margin-right: 6px;
   color: #4361ee;
-  margin-right: 4px;
 }
 
+/* Action Button */
 .job-view-btn {
   background: #4361ee;
   color: white;
-  width: 100%;
   text-align: center;
+  padding: 10px 0;
   border-radius: 10px;
-  padding: 10px;
-  display: inline-block;
+  font-size: 0.9rem;
+  transition: 0.25s ease-in-out;
 }
 
 .job-view-btn:hover {

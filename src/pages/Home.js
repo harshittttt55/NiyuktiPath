@@ -5,6 +5,7 @@ import '../styles/home.css';
 import SectionTitle from '../components/SectionTitle';
 import Navbar from '../components/Navbar';
 import AnimatedCounter from '../components/AnimatedCounter';
+import DeviceShowcase from "../components/DeviceShowcase";
 
 // Assets
 const PHONE_MOCKUP_URL = '/images/phone-mockup.png';
@@ -106,40 +107,51 @@ const TestimonialCard = ({ quote, author, role }) => (
   </motion.div>
 );
 
-// FAQ Item Component
-const FAQItem = ({ question, answer }) => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <motion.div className={`faq-item ${isOpen ? 'open' : ''}`} variants={fadeInUp}>
-      <button
-        className="faq-question"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-      >
-        <h4>{question}</h4>
-        <motion.span
-          className="faq-toggle"
-          animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.3 }}
-        />
-      </button>
-      <motion.div
-        initial={false}
-        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-        className="faq-answer"
-      >
-        <p>{answer}</p>
-      </motion.div>
-    </motion.div>
-  );
-};
+// FAQ Item Component — clean + animated + reliable
+// const FAQItem = ({ question, answer }) => {
+//   const [isOpen, setIsOpen] = useState(false);
 
-const stats = [
-  { value: 7000, suffix: 'k+', label: 'Active Jobs' },
-  { value: 1200, suffix: 'k+', label: 'Companies' },
-  { value: 95, suffix: '%', label: 'Success Rate' },
-];
+//   return (
+//     <motion.div
+//       className="faq-item"
+//       variants={fadeInUp}
+//       initial={false}
+//       animate={{ borderColor: isOpen ? "var(--primary)" : "#e5e7eb" }}
+//     >
+//       <button className="faq-question" onClick={() => setIsOpen(!isOpen)}>
+//         <h4>{question}</h4>
+//         <motion.span
+//           animate={{ rotate: isOpen ? 45 : 0 }}
+//           transition={{ duration: 0.25 }}
+//           className="faq-toggle"
+//         >
+//           +
+//         </motion.span>
+//       </button>
+
+//       <motion.div
+//         animate={{
+//           height: isOpen ? "auto" : 0,
+//           opacity: isOpen ? 1 : 0,
+//           marginTop: isOpen ? 12 : 0
+//         }}
+//         transition={{ duration: 0.3 }}
+//         className="faq-answer"
+//       >
+//         <p>{answer}</p>
+//       </motion.div>
+//     </motion.div>
+//   );
+// };
+
+
+// const stats = [
+//   { value: 7000, suffix: 'k+', label: 'Active Jobs' },
+//   { value: 1200, suffix: 'k+', label: 'Companies' },
+//   { value: 95, suffix: '%', label: 'Success Rate' },
+// ];
+
 
 const features = [
   { title: 'Dual dashboards', description: 'Switch between seeker insights and provider controls in a single click.', icon: '🧭' },
@@ -153,19 +165,19 @@ const pulseMoments = [
     spark: 'Live now · 12 recruiters online',
     title: 'Realtime chat requests',
     detail: '34 job seekers pinged HR this hour; 6 providers are preparing responses.',
-    metric: '6 confirmations pending',
+    // metric: '6 confirmations pending',
   },
   {
     spark: 'ATS insights · updated 2m ago',
     title: 'ATS examiner running',
     detail: 'Candidates refreshed resumes for 210 roles and bumped match scores by 18% on average.',
-    metric: 'Preview recommendations →',
+    // metric: 'Preview recommendations →',
   },
   {
     spark: 'Opportunity pulse · curated for you',
     title: 'Trending routes',
     detail: 'Product, Design, and GTM squads reopened 98 roles and added 42 internship slots.',
-    metric: '+12 new companies invited',
+    // metric: '+12 new companies invited',
   },
 ];
 
@@ -376,7 +388,7 @@ const Home = () => {
                   Get Started
                 </Link>
               </motion.div>
-              <motion.div className="hero-stats" variants={stagger}>
+              {/* <motion.div className="hero-stats" variants={stagger}>
                 {stats.map((stat, index) => (
                   <motion.div key={index} className="stat" variants={fadeInUp}>
                     <strong>
@@ -385,7 +397,7 @@ const Home = () => {
                     <span>{stat.label}</span>
                   </motion.div>
                 ))}
-              </motion.div>
+              </motion.div> */}
             </motion.div>
             <motion.div className="hero-right" initial="hidden" animate="visible" variants={stagger}>
               <div className="hero-panel">
@@ -418,13 +430,17 @@ const Home = () => {
                 </form>
                 <div className="hero-quick-chips">
                   {heroFilters.map((chip) => (
-                    <span key={chip} className="hero-chip">
+                    <button
+                      key={chip}
+                      className="hero-chip-btn"
+                      onClick={() => console.log("Clicked:", chip)}
+                    >
                       {chip}
-                    </span>
+                    </button>
                   ))}
                 </div>
-                <p className="hero-search-result">{searchMessage}</p>
-                <div className="hero-metrics">
+                {/* <p className="hero-search-result">{searchMessage}</p> */}
+                {/* <div className="hero-metrics">
                   <div>
                     <strong>12 min</strong>
                     <span>Avg. recruiter reply</span>
@@ -433,7 +449,7 @@ const Home = () => {
                     <strong>4.8 / 5</strong>
                     <span>Candidate satisfaction</span>
                   </div>
-                </div>
+                </div> */}
               </div>
             </motion.div>
           </div>
@@ -482,9 +498,6 @@ const Home = () => {
                   <Link to="/chat" className="btn btn-tertiary">
                     Open chat console
                   </Link>
-                  <Link to="/jobs" className="btn btn-ghost">
-                    Explore trending roles
-                  </Link>
                 </div>
                 <p className="pulse-metric">{pulseMoments[activePulse].metric}</p>
               </motion.div>
@@ -504,68 +517,10 @@ const Home = () => {
             </div>
           </div>
         </section>
+        
+        {/* Phone component added here */}
+        <DeviceShowcase />
 
-        {/* PHONE MOCKUP SECTION (Sticky Scroll Reveal) */}
-        <section className="section phone-section">
-          <div className="phone-sticky-wrapper">
-
-            {/* Sticky Phone */}
-            <motion.div
-              className="phone-sticky"
-              initial={{ rotate: -2 }}
-              whileInView={{ rotate: 2 }}
-              viewport={{ amount: 0.5, once: false }}
-              transition={{ duration: 1.4, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
-            >
-
-              <div className="sticky-phone-shell">
-                <img 
-                  src="/images/phone.png" 
-                  alt="Phone mockup" 
-                  className="sticky-phone-img" 
-                />
-
-                <div className="sticky-phone-glow" />
-              </div>
-
-            </motion.div>
-
-            {/* Reveal Steps */}
-            <div className="phone-reveal-content">
-              {[
-                {
-                  title: "Unified Mobile Experience",
-                  desc: "Your entire NiyuktiPath workflow — chats, ATS updates, news, job queues — all synced in real time.",
-                },
-                {
-                  title: "Live HR Conversations",
-                  desc: "When a recruiter accepts your chat request, your mobile timeline lights up instantly.",
-                },
-                {
-                  title: "ATS Results On The Go",
-                  desc: "Re-scan your resume, get improvements, and apply faster — anywhere, anytime.",
-                },
-                {
-                  title: "One-Tap Workflows",
-                  desc: "Switch modes, track applications, save roles, and respond to invites with a single tap.",
-                },
-              ].map((step, index) => (
-                <motion.div
-                  key={index}
-                  className="reveal-step"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ amount: 0.6, once: true }}
-                  transition={{ duration: 0.7, delay: index * 0.1 }}
-                >
-                  <h3>{step.title}</h3>
-                  <p>{step.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-
-          </div>
-        </section>
 
         {/* FEATURED COMPANIES & OPPORTUNITIES sections are commented out intentionally */}
 
@@ -694,7 +649,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* FAQ SECTION */}
+        {/* FAQ SECTION
         <section className="section faq-section" aria-labelledby="faq">
           <div className="container">
             <SectionTitle
@@ -702,19 +657,18 @@ const Home = () => {
               subtitle="We've got answers. Here are some of the most common queries."
               id="faq"
             />
-            <motion.div
-              className="faq-grid"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={stagger}
-            >
+
+            <div className="faq-grid">
               {faqs.map((faq) => (
-                <FAQItem key={faq.question} {...faq} />
+                <FAQItem
+                  key={faq.question}
+                  question={faq.question}
+                  answer={faq.answer}
+                />
               ))}
-            </motion.div>
+            </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   );

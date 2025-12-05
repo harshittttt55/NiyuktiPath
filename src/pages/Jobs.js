@@ -1,16 +1,48 @@
 import React from "react";
+import JobCard from "../components/JobCard";
 import "../styles/jobs.css";
 import { Link } from "react-router-dom";
 
 export default function Jobs() {
+
+  const jobs = [
+    {
+      title: "Frontend Developer",
+      company: "Tech Solutions Pvt. Ltd.",
+      desc: "Build interactive UI components and modern web experiences.",
+      salary: "₹8L – ₹14L",
+      location: "New Delhi",
+      posted: "2 days ago",
+      tags: ["React", "UI/UX", "JavaScript"],
+    },
+    {
+      title: "Backend Engineer",
+      company: "CloudLift Technologies",
+      desc: "Design APIs and backend architecture for scalable systems.",
+      salary: "₹10L – ₹18L",
+      location: "Remote",
+      posted: "4 days ago",
+      tags: ["Node.js", "MongoDB", "REST API"],
+    },
+    {
+      title: "UI/UX Designer",
+      company: "Creative Labs",
+      desc: "Design digital products and seamless experiences.",
+      salary: "₹6L – ₹12L",
+      location: "Bangalore",
+      posted: "1 week ago",
+      tags: ["Figma", "Wireframes"],
+    }
+  ];
+
   return (
     <div className="jobs-page">
 
       {/* Hero */}
       <section className="jobs-hero">
         <div className="container">
-          <h1>Find Your Dream Job</h1>
-          <p>Browse thousands of verified job opportunities.</p>
+          <h1>Latest Opportunities</h1>
+          <p>Explore curated openings from top companies.</p>
         </div>
       </section>
 
@@ -18,22 +50,21 @@ export default function Jobs() {
       <section className="filter-section">
         <div className="container">
           <form className="filter-form">
-
-            <div className="filter-group">
-              <label>Job Type</label>
-              <select>
-                <option>Full-Time</option>
-                <option>Part-Time</option>
-                <option>Internship</option>
-              </select>
-            </div>
-
             <div className="filter-group">
               <label>Category</label>
               <select>
                 <option>Software Development</option>
+                <option>Design</option>
                 <option>Marketing</option>
-                <option>Business</option>
+              </select>
+            </div>
+
+            <div className="filter-group">
+              <label>Work Mode</label>
+              <select>
+                <option>Remote</option>
+                <option>Hybrid</option>
+                <option>On-site</option>
               </select>
             </div>
 
@@ -49,52 +80,25 @@ export default function Jobs() {
         </div>
       </section>
 
-      {/* Job Listings */}
+      {/* Jobs List */}
       <section className="section">
         <div className="container">
-          <h2 className="section-title">Latest Job Openings</h2>
-
           <div className="job-listings">
 
-            {/* Job Card */}
-            <div className="job-card">
-              <div className="job-header">
-                <h3 className="job-title">Frontend Developer</h3>
-                <p className="company-name">Tech Solutions Pvt. Ltd.</p>
-              </div>
+            {jobs.map((job, index) => (
+              <JobCard
+                key={index}
+                title={job.title}
+                company={job.company}
+                desc={job.desc}
+                salary={job.salary}
+                location={job.location}
+                posted={job.posted}
+                tags={job.tags}
+                link="/job-details"
+              />
+            ))}
 
-              <div className="job-body">
-                <p className="job-description">
-                  Build beautiful user interfaces using React.
-                </p>
-
-                <div className="job-tags">
-                  <span className="job-tag">React</span>
-                  <span className="job-tag">JavaScript</span>
-                  <span className="job-tag">UI/UX</span>
-                </div>
-
-                <div className="job-meta">
-                  <div className="job-meta-item">
-                    <i className="fa-solid fa-location-dot"></i> New Delhi
-                  </div>
-                  <div className="job-meta-item">
-                    <i className="fa-solid fa-briefcase"></i> Full-Time
-                  </div>
-                  <div className="job-meta-item">
-                    <i className="fa-solid fa-clock"></i> 2 days ago
-                  </div>
-                </div>
-              </div>
-
-              <div className="job-footer">
-                <Link to="/job-details" className="btn apply-btn">
-                  View Details
-                </Link>
-              </div>
-            </div>
-
-            {/* Duplicate the above card for more jobs OR use map() later */}
           </div>
         </div>
       </section>
@@ -102,9 +106,42 @@ export default function Jobs() {
       {/* CTA */}
       <section className="jobs-cta">
         <div className="container">
-          <h2>Are you a recruiter?</h2>
-          <p>Post jobs and find the right talent for your company.</p>
-          <Link to="/post-job" className="btn cta-btn">Post a Job</Link>
+          <h2>Are you hiring?</h2>
+          <p>Post your job openings and reach top talent.</p>
+          <Link to="/post-job" className="btn cta-btn">
+            Post a Job
+          </Link>
+        </div>
+      </section>
+
+      {/* FAQ SECTION */}
+      <section className="faq-section">
+        <div className="container">
+          <h2 className="faq-title">Frequently Asked Questions</h2>
+
+          <div className="faq-list">
+
+            <details className="faq-item">
+              <summary>How do I apply for a job?</summary>
+              <p>Click “View Job” and follow the application instructions given for that position.</p>
+            </details>
+
+            <details className="faq-item">
+              <summary>Can companies post jobs here?</summary>
+              <p>Yes! Employers can add job listings using the Post Job page.</p>
+            </details>
+
+            <details className="faq-item">
+              <summary>Is applying for jobs free?</summary>
+              <p>Yes, job seekers can apply without any charges.</p>
+            </details>
+
+            <details className="faq-item">
+              <summary>Does this site support remote jobs?</summary>
+              <p>Yes, you can filter and find remote or hybrid openings easily.</p>
+            </details>
+
+          </div>
         </div>
       </section>
 

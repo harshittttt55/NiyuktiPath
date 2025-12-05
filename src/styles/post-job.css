@@ -5,7 +5,8 @@
   --dark: #212529;
   --light: #f8f9fa;
   --radius: 12px;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --text-muted: #6c757d;
 }
 
 /* HERO */
@@ -13,30 +14,42 @@
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   padding: 80px 0;
   text-align: center;
-  color: white;
+  color: var(--light);
 }
 
 .postjob-hero h1 {
   font-size: 2.6rem;
+  font-weight: 700;
 }
 
-/* FORM */
+/* WRAPPER SECTION */
+.postjob-section {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.postjob-container {
+  width: 100%;
+  max-width: 780px;
+}
+
+/* FORM CARD */
 .postjob-form {
   background: white;
   padding: 40px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  max-width: 700px;
-  margin: auto;
 }
 
-.form-title {
+.postjob-title {
   font-size: 1.8rem;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   color: var(--primary);
   text-align: center;
 }
 
+/* GROUPS */
 .form-group {
   margin-bottom: 20px;
 }
@@ -45,6 +58,7 @@
   font-weight: 600;
   display: block;
   margin-bottom: 6px;
+  color: var(--dark);
 }
 
 .form-group input,
@@ -52,36 +66,123 @@
 .form-group textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #dcdcdc;
   border-radius: var(--radius);
   font-size: 1rem;
+  transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.25);
 }
 
 textarea {
   min-height: 130px;
 }
 
-.submit-btn {
+/* Two column layout */
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* ===== Skills Tag UI ===== */
+
+.skill-input {
+  display: flex;
+  gap: 10px;
+}
+
+.skill-input input {
+  flex: 1;
+}
+
+.skill-input button {
+  padding: 10px 16px;
   background: var(--primary);
   color: white;
+  border-radius: var(--radius);
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.skill-input button:hover {
+  background: var(--secondary);
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.skill-tag {
+  background: var(--primary);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* ===== Preview Confirmation ===== */
+
+.preview-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 15px 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.preview-check input {
+  cursor: pointer;
+}
+
+/* SUBMIT BUTTON */
+.postjob-submit {
+  background: var(--primary);
+  color: var(--light);
   padding: 14px 26px;
   border-radius: var(--radius);
   width: 100%;
   font-size: 1rem;
-  margin-top: 10px;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s ease;
 }
 
-.submit-btn:hover {
+.postjob-submit:hover {
   background: var(--secondary);
 }
 
-/* Responsive */
+.postjob-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .postjob-hero h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .postjob-form {
     padding: 25px;
+  }
+
+  .form-row {
+    flex-direction: column;
   }
 }
