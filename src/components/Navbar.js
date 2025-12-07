@@ -36,9 +36,9 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">
+        {/* <Link to="/" className="navbar-logo">
           <span className="logo-text">Niyukti</span>
-        </Link>
+        </Link> */}
 
         <div className="navbar-toggle" onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}

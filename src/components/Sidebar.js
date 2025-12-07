@@ -31,7 +31,7 @@ export default function Sidebar() {
     >
       {/* Sidebar Header */}
       <div className="sidebar-header">
-        <span className="logo">{expanded ? "Niyukti" : "N"}</span>
+        <span className="logo">{expanded ? "NiyuktiPath" : "N"}</span>
       </div>
 
       {/* Menu */}
