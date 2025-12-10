@@ -2,6 +2,7 @@ import React from "react";
 import JobCard from "../components/JobCard";
 import "../styles/jobs.css";
 import { Link } from "react-router-dom";
+import DarkVeil from '../components/DarkVeil';
 
 export default function Jobs() {
 
@@ -37,10 +38,13 @@ export default function Jobs() {
 
   return (
     <div className="jobs-page">
-
       {/* Hero */}
       <section className="jobs-hero">
-        <div className="container">
+        <div className="darkveil-wrapper">
+          <DarkVeil />
+        </div>
+
+        <div className="container hero-content">
           <h1>Latest Opportunities</h1>
           <p>Explore curated openings from top companies.</p>
         </div>

@@ -112,15 +112,20 @@ export default function About() {
           <h2 className="center">Leadership Team</h2>
 
           <div className="team-grid">
-            {["Harshit Sharma", "Aryan Gupta", "Team Member 3"].map((name) => (
+            {[
+              { name: "Shristi Shrivastava", position: "Founder & CEO", photo: "/images/Shristi.jpeg" },
+              { name: "Harshit Sharma", position: "Co-Founder & CTO", photo: "/images/Harshit.jpeg"},
+              { name: "Sujal Jain", position: "Chief Operations Officer", photo: "/images/Sujal.jpeg"}
+            ].map((member) => (
               <motion.div
-                key={name}
+                key={member.name}
                 className="team-premium-card"
                 whileHover={{ y: -6 }}
               >
-                <div className="team-photo"></div>
-                <h3>{name}</h3>
-                <p>Role & Responsibility</p>
+                <div className="team-photo" style={{ backgroundImage: `url(${member.photo})` }}></div>
+
+                <h3>{member.name}</h3>
+                <p>{member.position}</p>
               </motion.div>
             ))}
           </div>

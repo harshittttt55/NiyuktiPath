@@ -21,11 +21,13 @@ import Signup from "./pages/Signup";
 export default function App() {
   return (
     <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
       <Layout>
         <Routes>
 
           {/* Core Pages */}
-          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
 

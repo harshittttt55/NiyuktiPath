@@ -6,20 +6,57 @@
   --shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
-/* Hero */
+/* HERO SECTION */
 .jobs-hero {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  padding: 80px 0;
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  color: var(--light);
+  background: radial-gradient(circle at 20% -10%, rgba(124, 93, 250, 0.35), rgba(0, 181, 216, 0.2)),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)),
+      linear-gradient(180deg, #0f172a 0%, #4a5d8c 35%, #1f376a 100%);
+}
+
+/* DarkVeil forced fit */
+.darkveil-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.darkveil-wrapper canvas,
+.darkveil-canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+
+/* bring hero text above canvas */
+.jobs-hero .hero-content {
+  position: relative;
+  z-index: 3;
 }
 
 .jobs-hero h1 {
-  font-size: 2.6rem;
+  font-size: 2.8rem;
   margin-bottom: 10px;
+  color: white;
 }
 
-/* Filters */
+.jobs-hero p {
+  color: white;
+}
+
+/* Filter Section */
 .filter-section {
   background: #f6f8fc;
   padding: 25px 0;
@@ -59,7 +96,7 @@
   height: 53px;
 }
 
-/* Jobs grid */
+/* Jobs Grid */
 .job-listings {
   margin-top: 40px;
   display: grid;
@@ -89,7 +126,7 @@
   color: black;
 }
 
-/* FAQ Section */
+/* FAQ SECTION */
 .faq-section {
   padding: 70px 20px;
   background: var(--light);
@@ -102,7 +139,6 @@
   margin-bottom: 35px;
 }
 
-/* FAQ items */
 .faq-list {
   max-width: 750px;
   margin: auto;
@@ -129,22 +165,11 @@
 .faq-item summary {
   font-weight: 600;
   font-size: 1rem;
-  color: #333;
-  outline: none;
-  cursor: pointer;
+  color: black, var(--light);
 }
 
 .faq-item p {
   margin-top: 8px;
   font-size: 0.9rem;
-  color: #555;
+  color: black, var(--light);
 }
-
-[data-theme="dark"] .faq-item summary{
-  color: #f0f0f0;
-}
-
-[data-theme="dark"] .faq-item p{
-  color: #ccc;
-}
-  

@@ -3,6 +3,7 @@
   --primary: #4361ee;
   --secondary: #312fae;
   --highlight: #a78bfa;
+  --light: #ffffff;
   --light-bg: #f8faff;
   --glass-bg: rgba(255, 255, 255, 0.65);
   --text-dark: #111827;
@@ -25,6 +26,7 @@
 }
 .center {
   text-align: center;
+  color: var(--primary);
 }
 
 /* HERO SECTION */
@@ -88,16 +90,17 @@
 .split-content h2 {
   font-size: 2rem;
   margin-bottom: 0.6rem;
+  color: black, var(--glass-bg);
 }
 
 .split-content p {
-  color: var(--text-muted);
+  color: black, var(--text-muted);
   line-height: 1.65;
 }
 
 /* GLASS VALUES SECTION */
 .values-premium {
-  background: linear-gradient(to bottom, var(--light-bg), #eef2ff);
+  background: linear-gradient(to bottom, var(--glass-bg), #eef2ff);
   padding: 110px 0;
 }
 
@@ -121,6 +124,7 @@
 .glass-card h3 {
   margin-bottom: 10px;
   font-size: 1.25rem;
+  color: var(--primary);
 }
 
 .glass-card p {
@@ -131,7 +135,7 @@
 /* STATS SECTION */
 .stats-section {
   padding: 100px 0;
-  background: white;
+  background: var(--light-bg);
 }
 
 .stats-grid {
@@ -156,7 +160,7 @@
 
 /* TEAM SECTION */
 .team-premium {
-  background: #fafbff;
+  background: var(--light);
   padding: 110px 0;
 }
 
@@ -176,15 +180,32 @@
   transition: 0.3s;
 }
 
+.team-premium-card h3 {
+  margin-bottom: 6px;
+  font-size: 1.2rem;
+  color: #2f3540;
+}
+
+.team-premium-card p {
+  color: var(--text-muted);
+}
+
 .team-premium-card:hover {
   transform: translateY(-6px);
 }
 
 .team-photo {
   height: 200px;
-  background: #dcdcdc;
   border-radius: var(--radius);
   margin-bottom: 1rem;
+
+  /* REQUIRED to show the image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* fallback grey only if image fails */
+  background-color: #dcdcdc;
 }
 
 /* CTA SECTION */
