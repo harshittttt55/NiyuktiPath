@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/employer-resources.css";
+import DarkVeil from '../components/DarkVeil';
 
 export default function EmployerResources() {
   return (
@@ -7,7 +8,11 @@ export default function EmployerResources() {
 
       {/* HERO SECTION */}
       <section className="employer-hero">
-        <div className="container">
+        <div className="darkveil-wrapper">
+          <DarkVeil />
+        </div>
+
+        <div className="container hero-content">
           <h1>Employer Resources</h1>
           <p>Helpful tools and guides to hire the best talent.</p>
         </div>

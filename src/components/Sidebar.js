@@ -14,6 +14,10 @@ export default function Sidebar() {
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
 
+  if (location.pathname === "/") {
+    return null;
+  }
+
   const menuItems = [
     { name: "Home", icon: <FaHome />, path: "/" },
     { name: "Jobs", icon: <FaBriefcase />, path: "/jobs" },

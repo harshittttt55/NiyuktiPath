@@ -9,6 +9,10 @@
   padding-top: 20px;
 }
 
+.layout-content.no-sidebar {
+  margin-left: 0;
+}
+
 .sidebar.expanded ~ .layout-content {
   margin-left: 240px; /* expanded width */
 }

@@ -23,6 +23,9 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* Auth Pages */}
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
       <Layout>
         <Routes>
@@ -48,10 +51,6 @@ export default function App() {
 
           {/* Tools */}
           <Route path="/resume-builder" element={<ResumeBuilder />} />
-
-          {/* Auth Pages */}
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
 
         </Routes>
       </Layout>

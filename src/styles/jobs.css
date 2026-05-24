@@ -3,7 +3,7 @@
   --secondary: #3f37c9;
   --light: #ffffff;
   --radius: 12px;
-  --shadow: 0 6px 18px rgba(0,0,0,0.08);
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 /* HERO SECTION */
@@ -16,8 +16,8 @@
   align-items: center;
   text-align: center;
   background: radial-gradient(circle at 20% -10%, rgba(124, 93, 250, 0.35), rgba(0, 181, 216, 0.2)),
-      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)),
-      linear-gradient(180deg, #0f172a 0%, #4a5d8c 35%, #1f376a 100%);
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, #0f172a 0%, #4a5d8c 35%, #1f376a 100%);
 }
 
 /* DarkVeil forced fit */
@@ -121,6 +121,7 @@
   color: var(--primary);
   border-radius: var(--radius);
 }
+
 .cta-btn:hover {
   background: #4cc9f0;
   color: black;

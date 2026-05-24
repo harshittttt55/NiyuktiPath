@@ -10,19 +10,51 @@
 
 /* HERO */
 .contact-hero {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  padding: 80px 0;
-  color: white;
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  background: radial-gradient(circle at 20% -10%, rgba(124, 93, 250, 0.35), rgba(0, 181, 216, 0.2)),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)),
+    linear-gradient(180deg, #0f172a 0%, #4a5d8c 35%, #1f376a 100%);
+}
+
+.darkveil-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.darkveil-wrapper canvas,
+.darkveil-canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+}
+
+.contact-hero .hero-content {
+  position: relative;
+  z-index: 3;
 }
 
 .contact-hero h1 {
   font-size: 2.8rem;
   font-weight: 700;
+  color: white;
+  margin-bottom: 10px;
 }
 
 .contact-hero p {
-  opacity: 0.9;
+  color: white;
 }
 
 /* Contact Grid */

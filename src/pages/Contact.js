@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/contact.css";
+import DarkVeil from '../components/DarkVeil';
 
 export default function Contact() {
   return (
@@ -7,7 +8,11 @@ export default function Contact() {
 
       {/* Hero Section */}
       <section className="contact-hero">
-        <div className="container">
+        <div className="darkveil-wrapper">
+          <DarkVeil />
+        </div>
+
+        <div className="container hero-content">
           <h1>Contact Us</h1>
           <p>We’re here to help. Reach out to us anytime.</p>
         </div>

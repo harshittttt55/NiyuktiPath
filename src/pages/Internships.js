@@ -1,14 +1,50 @@
 import React from "react";
+import InternshipCard from "../components/InternshipCard";
 import "../styles/internships.css";
 import { Link } from "react-router-dom";
+import DarkVeil from '../components/DarkVeil';
 
 export default function Internships() {
+  const internships = [
+    {
+      title: "React Intern",
+      company: "Innovate Labs",
+      desc: "Learn React and contribute to production-level projects.",
+      duration: "3 Months",
+      location: "Remote",
+      posted: "1 day ago",
+      tags: ["React", "Web Dev"]
+    },
+    {
+      title: "Backend Development Intern",
+      company: "Scalable Systems",
+      desc: "Assist in building scalable APIs and learning Node.js.",
+      duration: "6 Months",
+      location: "Mumbai",
+      posted: "2 days ago",
+      tags: ["Node.js", "Express", "MongoDB"]
+    },
+    {
+      title: "UI/UX Design Intern",
+      company: "Visual Pixels",
+      desc: "Work on user interface designs and user research experiments.",
+      duration: "2 Months",
+      location: "Bangalore",
+      posted: "1 week ago",
+      tags: ["Figma", "UI/UX", "Adobe XD"]
+    }
+  ];
+
   return (
     <div className="internships-page">
 
       {/* Hero */}
       <section className="internship-hero">
-        <div className="container">
+        <div className="darkveil-wrapper">
+          <DarkVeil />
+        </div>
+
+        <div className="container hero-content">
           <h1>Discover Internships</h1>
           <p>Find internships that fit your goals and skills.</p>
         </div>
@@ -56,36 +92,18 @@ export default function Internships() {
 
           <div className="internship-listings">
 
-            {/* Internship Card */}
-            <div className="internship-card">
-              <div className="internship-header">
-                <h3 className="internship-title">React Intern</h3>
-                <p className="company-name">Innovate Labs</p>
-              </div>
-
-              <div className="internship-body">
-                <p className="internship-description">
-                  Learn React and contribute to production-level projects.
-                </p>
-
-                <div className="internship-tags">
-                  <span className="internship-tag">React</span>
-                  <span className="internship-tag">Web Dev</span>
-                </div>
-
-                <div className="internship-meta">
-                  <div><i className="fa-solid fa-location-dot"></i> Remote</div>
-                  <div><i className="fa-solid fa-calendar"></i> 3 Months</div>
-                  <div><i className="fa-solid fa-clock"></i> 1 day ago</div>
-                </div>
-              </div>
-
-              <div className="internship-footer">
-                <Link to="/internship-post" className="btn view-btn">
-                  View Details
-                </Link>
-              </div>
-            </div>
+            {internships.map((internship, index) => (
+              <InternshipCard
+                key={index}
+                title={internship.title}
+                company={internship.company}
+                desc={internship.desc}
+                duration={internship.duration}
+                location={internship.location}
+                posted={internship.posted}
+                tags={internship.tags}
+              />
+            ))}
 
           </div>
         </div>
