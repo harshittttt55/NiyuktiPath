@@ -1,0 +1,22 @@
+.layout {
+  display: flex;
+}
+
+.layout-content {
+  margin-left: 0;
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 20px;
+}
+
+/* Sidebar Overlay Effect (Optional: Blur content when sidebar is open) */
+.layout.sidebar-open .layout-content {
+  filter: blur(4px) brightness(0.7);
+  pointer-events: none; /* Disable interaction while sidebar is open */
+}
+
+@media (max-width: 768px) {
+  .layout-content {
+    margin-left: 0;
+  }
+}
