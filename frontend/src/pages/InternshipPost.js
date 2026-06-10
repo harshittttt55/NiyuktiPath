@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/internship-post.css";
 import {
   FaRocket,
@@ -20,25 +20,27 @@ import {
 
 export default function InternshipPost() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const editInternshipData = location.state?.editInternship;
 
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(editInternshipData?.skills || []);
   const [skillInput, setSkillInput] = useState("");
   const [previewAccepted, setPreviewAccepted] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: "",
-    company: "",
-    email: "",
-    location: "",
-    stipend: "",
-    internshipType: "Full Time",
-    workMode: "Remote",
-    duration: "3 Months",
-    category: "Software Development",
-    deadline: "",
-    applyLink: "",
-    description: "",
-    perks: "",
+    title: editInternshipData?.title || "",
+    company: editInternshipData?.company || "",
+    email: editInternshipData?.email || "",
+    location: editInternshipData?.location || "",
+    stipend: editInternshipData?.stipend || "",
+    internshipType: editInternshipData?.internshipType || "Full Time",
+    workMode: editInternshipData?.workMode || "Remote",
+    duration: editInternshipData?.duration || "3 Months",
+    category: editInternshipData?.category || "Software Development",
+    deadline: editInternshipData?.deadline || "",
+    applyLink: editInternshipData?.applyLink || "",
+    description: editInternshipData?.description || editInternshipData?.desc || "",
+    perks: editInternshipData?.perks || "",
   });
 
   // Role protection (Similar to PostJob)
@@ -93,25 +95,42 @@ export default function InternshipPost() {
     try {
       const token = localStorage.getItem("token");
       const payload = { ...formData, skills };
+      
       console.log("Submitting internship payload:", payload);
 
-      const response = await fetch("http://localhost:8000/api/internships/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: JSON.stringify(payload),
-      });
+      if (editInternshipData) {
+        // UPDATE MODE
+        const response = await fetch(`http://localhost:8000/api/internships/${editInternshipData.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify(payload),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Update failed");
 
-      if (!response.ok) {
-        throw new Error(data.detail || "Failed to post internship.");
+        alert("Internship updated successfully!");
+        navigate("/profile/recruiter");
+      } else {
+        // CREATE MODE
+        const response = await fetch("http://localhost:8000/api/internships/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Failed to post internship.");
+
+        alert("Internship posted successfully!");
+        navigate("/internships");
       }
-
-      alert("Internship posted successfully!");
-      navigate("/internships");
     } catch (err) {
       setSubmitError(err.message);
     } finally {
@@ -125,10 +144,10 @@ export default function InternshipPost() {
       <section className="internpost-hero">
         <div className="container">
           <h1>
-            Post an <span className="highlight">Internship</span>
+            {editInternshipData ? "Edit" : "Post an"} <span className="highlight">Internship</span>
           </h1>
           <p>
-            Help students and freshers kickstart their careers. Share your opportunities with talented young minds.
+            {editInternshipData ? "Update your internship listing details." : "Help students and freshers kickstart their careers. Share your opportunities with talented young minds."}
           </p>
         </div>
       </section>
@@ -387,7 +406,7 @@ export default function InternshipPost() {
                 disabled={!previewAccepted || isSubmitting}
               >
                 <FaRocket className="icons" />
-                {isSubmitting ? "Posting..." : "Publish Internship"}
+                {isSubmitting ? "Processing..." : (editInternshipData ? "Update Internship" : "Publish Internship")}
               </button>
             </div>
           </form>

@@ -206,9 +206,14 @@ export default function RecruiterProfile() {
           <p>{item.location} · {type === 'job' ? item.jobType : `${item.duration} · ${item.stipend}`}</p>
         </div>
         <div className="listing-actions">
-          {type === 'job' && (
+          {type === 'job' ? (
             <button className="manage-account-btn" style={{fontSize: '11px'}}
               onClick={() => navigate("/post-job", { state: { editJob: item } })}>
+              <FaEdit /> Edit
+            </button>
+          ) : (
+            <button className="manage-account-btn" style={{fontSize: '11px'}}
+              onClick={() => navigate("/internship-post", { state: { editInternship: item } })}>
               <FaEdit /> Edit
             </button>
           )}

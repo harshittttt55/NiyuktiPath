@@ -103,7 +103,7 @@ export default function PostJob() {
       let response;
       if (editJobData) {
         // UPDATE MODE
-        const result = await putAuthenticatedData(`/api/jobs/${editJobData._id}`, payload);
+        const result = await putAuthenticatedData(`${API.JOBS}/${editJobData.id}`, payload);
         if (result && !result.detail) {
           alert("Job updated successfully!");
           navigate("/profile/recruiter");

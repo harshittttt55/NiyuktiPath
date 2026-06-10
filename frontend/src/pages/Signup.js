@@ -6,7 +6,8 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 const HERO_IMAGES = [
   "/images/sign-in.svg",
   "/images/sign-in2.png",
-  "/images/sign-in3.svg"
+  "/images/sign-in3.svg",
+  "/images/hero.png"
 ];
 
 export default function Signup() {
