@@ -101,3 +101,14 @@ NiyuktiPath/
 ├── package.json                # Frontend dependencies & scripts
 └── Readme.md                   # Documentation
 ```
+
+
+Running Commands:
+terminal 1 ( backend )
+cd backend
+source venv/bin/activate
+uvicorn app.main:app --reload
+
+terminal 2 ( frontend )
+cd frontend
+npm start

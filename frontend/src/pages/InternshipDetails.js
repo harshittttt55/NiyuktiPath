@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { 
   FaMapMarkerAlt, 
@@ -6,7 +6,6 @@ import {
   FaClock, 
   FaBriefcase, 
   FaRegBookmark, 
-  FaBookmark,
   FaShareAlt, 
   FaChevronLeft,
   FaCheckCircle,
@@ -16,18 +15,19 @@ import {
   FaTools
 } from "react-icons/fa";
 import { motion } from "framer-motion";
-import "../styles/job-details.css";
+import "../styles/internship-detail.css";
+
 import { API, getAuthenticatedData, putAuthenticatedData } from "../utils/api";
 
-export default function JobDetails() {
+export default function InternshipDetails() {
   const location = useLocation();
   const navigate = useNavigate();
-  const job = location.state?.job;
-  
-  const [isApplied, setIsApplied] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [applying, setApplying] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const internship = location.state?.internship;
+
+  const [isApplied, setIsApplied] = React.useState(false);
+  const [isSaved, setIsSaved] = React.useState(false);
+  const [applying, setApplying] = React.useState(false);
+  const [saving, setSaving] = React.useState(false);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -37,13 +37,13 @@ export default function JobDetails() {
 
   const checkInitialStatus = async () => {
     const token = localStorage.getItem("token");
-    if (!token || !job) return;
+    if (!token || !internship) return;
 
     try {
       const profile = await getAuthenticatedData(API.PROFILE);
       if (profile && !profile.detail) {
-        setIsApplied(profile.applied_jobs?.some(j => (j.id === job.id) || (j.title === job.title && j.company === job.company)));
-        setIsSaved(profile.saved_jobs?.some(j => (j.id === job.id) || (j.title === job.title && j.company === job.company)));
+        setIsApplied(profile.applied_jobs?.some(j => (j.id === internship.id) || (j.title === internship.title && j.company === internship.company)));
+        setIsSaved(profile.saved_jobs?.some(j => (j.id === internship.id) || (j.title === internship.title && j.company === internship.company)));
       }
     } catch (err) {
       console.error("Status check failed:", err);
@@ -53,14 +53,14 @@ export default function JobDetails() {
   const handleApply = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please sign in to apply for this job.");
+      alert("Please sign in to apply for this internship.");
       navigate("/signin");
       return;
     }
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     if (user.role === "job_provider") {
-      alert("Recruiters cannot apply for jobs.");
+      alert("Recruiters cannot apply for internships.");
       return;
     }
 
@@ -69,18 +69,18 @@ export default function JobDetails() {
       const profile = await getAuthenticatedData(API.PROFILE);
       if (!profile || profile.detail) throw new Error("Could not fetch profile");
 
-      const alreadyApplied = profile.applied_jobs?.some(j => (j.id === job.id) || (j.title === job.title && j.company === job.company));
+      const alreadyApplied = profile.applied_jobs?.some(j => (j.id === internship.id) || (j.title === internship.title && j.company === internship.company));
       if (alreadyApplied) {
-        alert("You have already applied for this job!");
+        alert("You have already applied for this internship!");
         setIsApplied(true);
         setApplying(false);
         return;
       }
 
       const newApplication = {
-        id: job.id,
-        title: job.title,
-        company: job.company,
+        id: internship.id,
+        title: internship.title,
+        company: internship.company,
         date: new Date().toISOString().split('T')[0],
         status: "Applied"
       };
@@ -104,7 +104,7 @@ export default function JobDetails() {
   const handleSaveToggle = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please sign in to save this job.");
+      alert("Please sign in to save this internship.");
       navigate("/signin");
       return;
     }
@@ -117,15 +117,14 @@ export default function JobDetails() {
       let updatedSavedJobs = [...(profile.saved_jobs || [])];
       
       if (isSaved) {
-        // Remove from saved
-        updatedSavedJobs = updatedSavedJobs.filter(j => !(j.title === job.title && j.company === job.company));
+        updatedSavedJobs = updatedSavedJobs.filter(j => !( (j.id === internship.id) || (j.title === internship.title && j.company === internship.company) ));
       } else {
-        // Add to saved
         updatedSavedJobs = [{
-          title: job.title,
-          company: job.company,
-          location: job.location,
-          salary: job.salary
+          id: internship.id,
+          title: internship.title,
+          company: internship.company,
+          location: internship.location,
+          salary: internship.stipend
         }, ...updatedSavedJobs];
       }
 
@@ -147,8 +146,8 @@ export default function JobDetails() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: job.title,
-        text: `Check out this job at ${job.company}`,
+        title: internship.title,
+        text: `Check out this internship at ${internship.company}`,
         url: window.location.href,
       }).catch(console.error);
     } else {
@@ -157,14 +156,14 @@ export default function JobDetails() {
     }
   };
 
-  if (!job) {
+  if (!internship) {
     return (
-      <div className="job-details-page" style={{ padding: "100px 20px", textAlign: "center" }}>
+      <div className="internship-details-page" style={{ padding: "100px 20px", textAlign: "center" }}>
         <div className="container">
-          <h2>No job details found.</h2>
-          <p>Please select a job from the <Link to="/jobs">Jobs page</Link>.</p>
-          <button onClick={() => navigate("/jobs")} className="btn btn-primary" style={{ marginTop: "20px" }}>
-            Browse Jobs
+          <h2>No internship details found.</h2>
+          <p>Please select an internship from the <Link to="/internships">Internships page</Link>.</p>
+          <button onClick={() => navigate("/internships")} className="btn btn-primary" style={{ marginTop: "20px" }}>
+            Browse Internships
           </button>
         </div>
       </div>
@@ -186,34 +185,35 @@ export default function JobDetails() {
 
   return (
     <motion.div 
-      className="job-details-page"
+      className="internship-details-page"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
-      <section className="job-details-hero">
+      {/* ── HERO SECTION ── */}
+      <section className="internship-details-hero">
         <div className="container">
           <motion.button 
             className="back-btn" 
             onClick={() => navigate(-1)}
             whileHover={{ x: -5 }}
           >
-            <FaChevronLeft /> Back to Jobs
+            <FaChevronLeft /> Back to Internships
           </motion.button>
           
-          <motion.h1 variants={itemVariants}>{job.title}</motion.h1>
+          <motion.h1 variants={itemVariants}>{internship.title}</motion.h1>
           <motion.div className="company-name" variants={itemVariants}>
-            <FaBuilding /> {job.company}
+            <FaBuilding /> {internship.company}
           </motion.div>
 
-          <motion.div className="job-meta-badges" variants={itemVariants}>
-            <span className="meta-badge"><FaMapMarkerAlt /> {job.location || "Remote"}</span>
-            <span className="meta-badge"><FaBriefcase /> {job.jobType || "Full Time"}</span>
-            <span className="meta-badge"><FaMoneyBillWave /> {job.salary || "Not Specified"}</span>
-            <span className="meta-badge"><FaClock /> {job.posted || "Recently"}</span>
+          <motion.div className="internship-meta-badges" variants={itemVariants}>
+            <span className="meta-badge"><FaMapMarkerAlt /> {internship.location || "Remote"}</span>
+            <span className="meta-badge"><FaBriefcase /> {internship.internshipType || "Full Time"}</span>
+            <span className="meta-badge"><FaMoneyBillWave /> {internship.stipend || "Not Specified"}</span>
+            <span className="meta-badge"><FaClock /> {internship.posted || "Recently"}</span>
           </motion.div>
 
-          <motion.div className="job-actions" variants={itemVariants}>
+          <motion.div className="internship-actions" variants={itemVariants}>
             {JSON.parse(localStorage.getItem("user") || "{}").role !== "job_provider" && (
               <button 
                 className={`btn ${isApplied ? 'applied-btn' : 'apply-btn-primary'}`} 
@@ -228,7 +228,7 @@ export default function JobDetails() {
               onClick={handleSaveToggle}
               disabled={saving}
             >
-              {isSaved ? <FaBookmark color="#0052CC" /> : <FaRegBookmark />} 
+              {isSaved ? <FaRegBookmark color="#0052CC" fill="#0052CC" /> : <FaRegBookmark />} 
               {saving ? "..." : isSaved ? "Saved" : "Save"}
             </button>
             <button className="btn accent-btn-outline" onClick={handleShare}><FaShareAlt /> Share</button>
@@ -236,52 +236,57 @@ export default function JobDetails() {
         </div>
       </section>
 
-      <section className="job-details-body">
-        <div className="job-content-grid">
-          <div className="job-main-column">
-            <motion.div className="job-content-card" variants={itemVariants}>
-              <div className="job-section">
-                <h2><FaTools /> Job Description</h2>
-                <p>{job.desc || job.description}</p>
+      {/* ── MAIN CONTENT ── */}
+      <section className="internship-details-body">
+        <div className="internship-content-grid">
+          
+          {/* LEFT: INTERNSHIP CONTENT */}
+          <div className="internship-main-column">
+            <motion.div className="internship-content-card" variants={itemVariants}>
+              
+              <div className="internship-section">
+                <h2><FaTools /> Internship Description</h2>
+                <p>{internship.desc || internship.description}</p>
               </div>
 
-              {job.skills && job.skills.length > 0 && (
-                <div className="job-section">
+              {internship.skills && internship.skills.length > 0 && (
+                <div className="internship-section">
                   <h2><FaCheckCircle /> Required Skills</h2>
                   <div className="skills-chips">
-                    {job.skills.map((skill, i) => (
+                    {internship.skills.map((skill, i) => (
                       <span key={i} className="skill-chip">{skill}</span>
                     ))}
                   </div>
                 </div>
               )}
 
-              <div className="job-section">
-                <h2><FaCheckCircle /> Key Responsibilities</h2>
+              <div className="internship-section">
+                <h2><FaCheckCircle /> Role & Responsibilities</h2>
                 <ul>
-                  <li>Work with cross-functional teams to deliver high-quality solutions.</li>
-                  <li>Ensure code quality and maintainability.</li>
-                  <li>Optimize applications for maximum speed and scalability.</li>
-                  <li>Participate in code reviews and architectural discussions.</li>
+                  <li>Assist the team in developing and implementing new features.</li>
+                  <li>Learn and apply modern technologies under guidance.</li>
+                  <li>Participate in daily stand-ups and sprint planning.</li>
+                  <li>Gain hands-on experience in a professional environment.</li>
                 </ul>
               </div>
 
-              {job.perks && (
-                <div className="job-section">
+              {internship.perks && (
+                <div className="internship-section">
                   <h2><FaCheckCircle /> Perks & Benefits</h2>
-                  <p>{job.perks}</p>
+                  <p>{internship.perks}</p>
                 </div>
               )}
             </motion.div>
 
+            {/* Selection Process */}
             <motion.div className="timeline-section-card" variants={itemVariants}>
-              <h2 className="section-title">Hiring Process</h2>
+              <h2 className="section-title">Selection Process</h2>
               <div className="timeline-v2">
                 {[
-                  { step: "1", title: "Application Review", desc: "Our recruiters will review your resume and portfolio." },
-                  { step: "2", title: "Technical Interview", desc: "A deep dive into your technical skills and experience." },
-                  { step: "3", title: "Culture Fit Round", desc: "Conversations with the team to see if we're a match." },
-                  { step: "4", title: "Job Offer", desc: "Final negotiations and signing the offer letter." }
+                  { step: "1", title: "Shortlisting", desc: "Our team will review your application and portfolio." },
+                  { step: "2", title: "Assignment / Initial Screening", desc: "A task to evaluate your basic skills or a quick call." },
+                  { step: "3", title: "Technical/Panel Interview", desc: "Interactive session with our technical leads." },
+                  { step: "4", title: "Selection Letter", desc: "Welcome aboard! Final details and onboarding." }
                 ].map((item, i) => (
                   <div className="timeline-item-v2" key={i}>
                     <div className="timeline-index">{item.step}</div>
@@ -295,24 +300,25 @@ export default function JobDetails() {
             </motion.div>
           </div>
 
-          <aside className="job-sidebar">
+          {/* RIGHT: SIDEBAR */}
+          <aside className="internship-sidebar">
             <motion.div className="sidebar-card" variants={itemVariants}>
               <h3>Quick Summary</h3>
               <div className="sidebar-info-row">
                 <span className="label"><FaEnvelope /> Contact</span>
-                <span className="value">{job.email || "hiring@company.com"}</span>
+                <span className="value">{internship.email || "careers@company.com"}</span>
               </div>
               <div className="sidebar-info-row">
                 <span className="label"><FaGlobe /> Work Mode</span>
-                <span className="value">{job.workMode || "On-site"}</span>
+                <span className="value">{internship.workMode || "Remote"}</span>
               </div>
               <div className="sidebar-info-row">
-                <span className="label"><FaMapMarkerAlt /> Experience</span>
-                <span className="value">{job.experience || "Fresher"}</span>
+                <span className="label"><FaClock /> Duration</span>
+                <span className="value">{internship.duration || "3-6 Months"}</span>
               </div>
               <div className="sidebar-info-row">
-                <span className="label"><FaClock /> Application Date</span>
-                <span className="value">{job.deadline || "ASAP"}</span>
+                <span className="label"><FaClock /> Deadline</span>
+                <span className="value">{internship.deadline || "Apply Soon"}</span>
               </div>
               
               {JSON.parse(localStorage.getItem("user") || "{}").role !== "job_provider" && (
@@ -321,7 +327,7 @@ export default function JobDetails() {
                   onClick={handleApply}
                   disabled={isApplied || applying}
                 >
-                  {isApplied ? "Already Applied" : "Apply for this Job"}
+                  {isApplied ? "Already Applied" : "Apply for Internship"}
                 </button>
               )}
             </motion.div>
@@ -333,16 +339,17 @@ export default function JobDetails() {
                   <FaBuilding />
                 </div>
                 <div>
-                  <h4>{job.company}</h4>
-                  <p>Technology Solutions Provider</p>
+                  <h4>{internship.company}</h4>
+                  <p>Innovation Center</p>
                 </div>
               </div>
               <p className="company-bio">
-                Leading the way in innovative digital solutions and building the future of web technologies.
+                A leading startup dedicated to providing amazing opportunities for students and freshers to kickstart their careers.
               </p>
               <Link to="#" className="view-more-link">View Company Profile</Link>
             </motion.div>
           </aside>
+
         </div>
       </section>
     </motion.div>

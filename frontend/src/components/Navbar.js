@@ -27,6 +27,11 @@ export default function Navbar({ onToggleSidebar }) {
       setUser(JSON.parse(storedUser));
     }
 
+    // Check for saved theme
+    const savedTheme = localStorage.getItem("theme") || 'light';
+    setIsDark(savedTheme === 'dark');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -45,8 +50,10 @@ export default function Navbar({ onToggleSidebar }) {
   };
   
   const toggleTheme = () => {
+    const newTheme = isDark ? 'light' : 'dark';
     setIsDark(!isDark);
-    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   const handleLogout = () => {
@@ -93,12 +100,17 @@ export default function Navbar({ onToggleSidebar }) {
 
           {user ? (
             <div className="navbar-profile">
-              <div className="profile-info">
-                <div className="profile-avatar">
-                  {user.name.charAt(0).toUpperCase()}
+              <Link 
+                to={user.role === 'job_provider' ? "/profile/recruiter" : "/profile/candidate"} 
+                className="profile-info-link"
+              >
+                <div className="profile-info">
+                  <div className="profile-avatar">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="user-name">{user.name}</span>
                 </div>
-                <span className="user-name">{user.name}</span>
-              </div>
+              </Link>
               <button className="logout-btn" onClick={handleLogout} title="Logout">
                 <FaSignOutAlt />
               </button>

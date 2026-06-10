@@ -1,39 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import InternshipCard from "../components/InternshipCard";
 import "../styles/internships.css";
 import { Link } from "react-router-dom";
 import DarkVeil from '../components/DarkVeil';
 
 export default function Internships() {
-  const internships = [
-    {
-      title: "React Intern",
-      company: "Innovate Labs",
-      desc: "Learn React and contribute to production-level projects.",
-      duration: "3 Months",
-      location: "Remote",
-      posted: "1 day ago",
-      tags: ["React", "Web Dev"]
-    },
-    {
-      title: "Backend Development Intern",
-      company: "Scalable Systems",
-      desc: "Assist in building scalable APIs and learning Node.js.",
-      duration: "6 Months",
-      location: "Mumbai",
-      posted: "2 days ago",
-      tags: ["Node.js", "Express", "MongoDB"]
-    },
-    {
-      title: "UI/UX Design Intern",
-      company: "Visual Pixels",
-      desc: "Work on user interface designs and user research experiments.",
-      duration: "2 Months",
-      location: "Bangalore",
-      posted: "1 week ago",
-      tags: ["Figma", "UI/UX", "Adobe XD"]
-    }
-  ];
+  const [internships, setInternships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/internships/all");
+        if (!response.ok) throw new Error("Failed to fetch internships");
+        const data = await response.json();
+        setInternships(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInternships();
+  }, []);
 
   return (
     <div className="internships-page">
@@ -90,21 +80,19 @@ export default function Internships() {
         <div className="container">
           <h2 className="section-title">Latest Internships</h2>
 
-          <div className="internship-listings">
+          {loading && <p className="status-msg">Loading internships...</p>}
+          {error && <p className="status-msg error">Error: {error}</p>}
+          {!loading && internships.length === 0 && (
+            <p className="status-msg">No internships found. Be the first to post!</p>
+          )}
 
-            {internships.map((internship, index) => (
+          <div className="internship-listings">
+            {internships.map((internship) => (
               <InternshipCard
-                key={index}
-                title={internship.title}
-                company={internship.company}
-                desc={internship.desc}
-                duration={internship.duration}
-                location={internship.location}
-                posted={internship.posted}
-                tags={internship.tags}
+                key={internship.id}
+                internship={internship}
               />
             ))}
-
           </div>
         </div>
       </section>
@@ -113,27 +101,34 @@ export default function Internships() {
       <section className="faq-section">
         <div className="container">
           <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="faq-list">
+            <details className="faq-item">
+              <summary>
+                Are the internships paid?
+              </summary>
+              <div className="faq-answer">
+                <p>Some internships offer stipends while others may be unpaid. Be sure to check the specific listing for details.</p>
+              </div>
+            </details>
 
-          <div className="faq-item">
-            <div className="faq-question">
-              Are the internships paid?
-              <i className="fa-solid fa-chevron-down"></i>
-            </div>
-            <div className="faq-answer">
-              Some internships offer stipends while others may be unpaid.
-            </div>
+            <details className="faq-item">
+              <summary>
+                Can freshers apply?
+              </summary>
+              <div className="faq-answer">
+                <p>Yes! We specifically curate many internships that are beginner-friendly and perfect for students or recent graduates.</p>
+              </div>
+            </details>
+
+            <details className="faq-item">
+              <summary>
+                How do I contact the recruiter?
+              </summary>
+              <div className="faq-answer">
+                <p>Once you view the internship details, you'll find the contact information or an application link provided by the recruiter.</p>
+              </div>
+            </details>
           </div>
-
-          <div className="faq-item">
-            <div className="faq-question">
-              Can freshers apply?
-              <i className="fa-solid fa-chevron-down"></i>
-            </div>
-            <div className="faq-answer">
-              Yes, most internships are suitable for beginners.
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -142,7 +137,7 @@ export default function Internships() {
         <div className="container">
           <h2>Are you hiring interns?</h2>
           <p>Post an internship and find the best talent.</p>
-          <Link to="/post-internship" className="btn cta-btn">
+          <Link to="/internship-post" className="btn cta-btn">
             Post Internship
           </Link>
         </div>

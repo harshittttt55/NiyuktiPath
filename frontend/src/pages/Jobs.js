@@ -1,40 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import JobCard from "../components/JobCard";
 import "../styles/jobs.css";
 import { Link } from "react-router-dom";
 import DarkVeil from '../components/DarkVeil';
+import { motion } from "framer-motion";
 
 export default function Jobs() {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const jobs = [
-    {
-      title: "Frontend Developer",
-      company: "Tech Solutions Pvt. Ltd.",
-      desc: "Build interactive UI components and modern web experiences.",
-      salary: "₹8L – ₹14L",
-      location: "New Delhi",
-      posted: "2 days ago",
-      tags: ["React", "UI/UX", "JavaScript"],
-    },
-    {
-      title: "Backend Engineer",
-      company: "CloudLift Technologies",
-      desc: "Design APIs and backend architecture for scalable systems.",
-      salary: "₹10L – ₹18L",
-      location: "Remote",
-      posted: "4 days ago",
-      tags: ["Node.js", "MongoDB", "REST API"],
-    },
-    {
-      title: "UI/UX Designer",
-      company: "Creative Labs",
-      desc: "Design digital products and seamless experiences.",
-      salary: "₹6L – ₹12L",
-      location: "Bangalore",
-      posted: "1 week ago",
-      tags: ["Figma", "Wireframes"],
-    }
-  ];
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/jobs/all");
+        if (!response.ok) throw new Error("Failed to connect to the server.");
+        const data = await response.json();
+        setJobs(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   return (
     <div className="jobs-page">
@@ -44,41 +35,48 @@ export default function Jobs() {
           <DarkVeil />
         </div>
 
-        <div className="container hero-content">
-          <h1>Latest Opportunities</h1>
-          <p>Explore curated openings from top companies.</p>
-        </div>
+        <motion.div
+          className="container hero-content"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1>Latest <span className="highlight">Opportunities</span></h1>
+          <p>Find your next career move from our handpicked listings from top companies.</p>
+        </motion.div>
       </section>
 
       {/* Filters */}
       <section className="filter-section">
         <div className="container">
-          <form className="filter-form">
+          <form className="filter-form" onSubmit={(e) => e.preventDefault()}>
             <div className="filter-group">
-              <label>Category</label>
-              <select>
-                <option>Software Development</option>
-                <option>Design</option>
-                <option>Marketing</option>
+              <label>Role Category</label>
+              <select defaultValue="Software Development">
+                <option value="Software Development">Software Development</option>
+                <option value="Design">Design</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Finance">Finance</option>
+                <option value="Others">Others</option>
               </select>
             </div>
 
             <div className="filter-group">
               <label>Work Mode</label>
-              <select>
-                <option>Remote</option>
-                <option>Hybrid</option>
-                <option>On-site</option>
+              <select defaultValue="Remote">
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="On-site">On-site</option>
               </select>
             </div>
 
             <div className="filter-group">
               <label>Location</label>
-              <input type="text" placeholder="City / Remote" />
+              <input type="text" placeholder="e.g. Bangalore, Remote" />
             </div>
 
-            <button type="submit" className="btn filter-btn">
-              Search
+            <button type="submit" className="filter-btn">
+              Find Jobs
             </button>
           </form>
         </div>
@@ -88,21 +86,29 @@ export default function Jobs() {
       <section className="section">
         <div className="container">
           <div className="job-listings">
+            {loading && (
+              <div className="loading-placeholder">
+                <p>Curating best roles for you...</p>
+              </div>
+            )}
 
-            {jobs.map((job, index) => (
-              <JobCard
-                key={index}
-                title={job.title}
-                company={job.company}
-                desc={job.desc}
-                salary={job.salary}
-                location={job.location}
-                posted={job.posted}
-                tags={job.tags}
-                link="/job-details"
-              />
+            {error && (
+              <div className="error-placeholder">
+                <p>Unable to load jobs: {error}</p>
+                <button onClick={() => window.location.reload()} className="btn btn-primary mt-2">Retry</button>
+              </div>
+            )}
+
+            {!loading && !error && jobs.length === 0 && (
+              <div className="empty-placeholder">
+                <p>No job postings found at the moment.</p>
+                <Link to="/post-job" className="btn btn-primary mt-2">Post a New Job</Link>
+              </div>
+            )}
+
+            {!loading && !error && jobs.map((job) => (
+              <JobCard key={job.id} job={job} />
             ))}
-
           </div>
         </div>
       </section>
@@ -110,10 +116,10 @@ export default function Jobs() {
       {/* CTA */}
       <section className="jobs-cta">
         <div className="container">
-          <h2>Are you hiring?</h2>
-          <p>Post your job openings and reach top talent.</p>
-          <Link to="/post-job" className="btn cta-btn">
-            Post a Job
+          <h2>Looking for talent?</h2>
+          <p>Get your job in front of thousands of qualified candidates today.</p>
+          <Link to="/post-job" className="cta-btn">
+            Create Job Posting
           </Link>
         </div>
       </section>
@@ -121,34 +127,29 @@ export default function Jobs() {
       {/* FAQ SECTION */}
       <section className="faq-section">
         <div className="container">
-          <h2 className="faq-title">Frequently Asked Questions</h2>
-
+          <h2 className="faq-title">Help & Support</h2>
           <div className="faq-list">
-
             <details className="faq-item">
-              <summary>How do I apply for a job?</summary>
-              <p>Click “View Job” and follow the application instructions given for that position.</p>
+              <summary>How can I track my applications?</summary>
+              <div className="faq-answer">
+                <p>You can view your application status in the "User Dashboard" if you are signed in.</p>
+              </div>
             </details>
-
             <details className="faq-item">
-              <summary>Can companies post jobs here?</summary>
-              <p>Yes! Employers can add job listings using the Post Job page.</p>
+              <summary>Are these jobs verified?</summary>
+              <div className="faq-answer">
+                <p>Yes, every job posted on NiyuktiPath undergoes a basic verification process for authenticity.</p>
+              </div>
             </details>
-
             <details className="faq-item">
-              <summary>Is applying for jobs free?</summary>
-              <p>Yes, job seekers can apply without any charges.</p>
+              <summary>Can I edit my job posting later?</summary>
+              <div className="faq-answer">
+                <p>Yes, recruiters can manage and edit their active listings from their recruiter dashboard.</p>
+              </div>
             </details>
-
-            <details className="faq-item">
-              <summary>Does this site support remote jobs?</summary>
-              <p>Yes, you can filter and find remote or hybrid openings easily.</p>
-            </details>
-
           </div>
         </div>
       </section>
-
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 import SectionTitle from '../components/SectionTitle';
 import Navbar from '../components/Navbar';
@@ -399,7 +399,7 @@ const personaCards = [
     title: 'Post, filter, and close candidates quicker',
     description: 'Capture the best leads, review ATS-ranked applications, and open chat windows the moment the seeker is ready.',
     benefits: ['ATS-score filtering', 'Chat request oversight', 'Insights & analytics dashboard'],
-    cta: { label: 'Post a Role', href: '/provider' },
+    cta: { label: 'Post a Role', href: '/post-job' },
     accent: '#00B5D8',
   },
 ];
@@ -514,6 +514,7 @@ const Home = () => {
   const [selectedRole, setSelectedRole] = useState('job seeker');
   const [searchMessage, setSearchMessage] = useState('Curating the right matches for your journey.');
   const [activePulse, setActivePulse] = useState(0);
+  const navigate = useNavigate();
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -545,12 +546,15 @@ const Home = () => {
 
   const handleHeroSearch = (e) => {
     e.preventDefault();
-    const trimmed = searchTerm.trim();
-    setSearchMessage(
-      trimmed
-        ? `${selectedRole === 'job seeker' ? 'Job seekers' : 'Job providers'} are exploring “${trimmed}”.`
-        : `Showing curated ${selectedRole === 'job seeker' ? 'job seeker' : 'job provider'} experiences.`
-    );
+    if (selectedRole === 'job seeker') {
+      navigate(`/jobs?search=${searchTerm}`);
+    } else {
+      navigate(`/post-job`);
+    }
+  };
+
+  const handleChipClick = (chip) => {
+    setSearchTerm(chip);
   };
 
   return (
@@ -623,13 +627,13 @@ const Home = () => {
                 </form>
                 <div className="hero-quick-chips">
                   {heroFilters.map((chip) => (
-                    <button
-                      key={chip}
-                      className="hero-chip-btn"
-                      onClick={() => console.log('Clicked:', chip)}
-                    >
-                      {chip}
-                    </button>
+                      <button
+                        key={chip}
+                        className="hero-chip-btn"
+                        onClick={() => handleChipClick(chip)}
+                      >
+                        {chip}
+                      </button>
                   ))}
                 </div>
               </div>

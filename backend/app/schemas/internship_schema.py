@@ -2,16 +2,15 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-
-class PostJobSchema(BaseModel):
+class PostInternshipSchema(BaseModel):
     title: str
     company: str
     email: str
     location: Optional[str] = ""
-    salary: Optional[str] = ""
-    jobType: Optional[str] = "Full Time"
-    workMode: Optional[str] = "On-site"
-    experience: Optional[str] = "Fresher"
+    stipend: Optional[str] = ""
+    internshipType: Optional[str] = "Full Time"
+    workMode: Optional[str] = "Remote"
+    duration: Optional[str] = "3 Months"
     category: Optional[str] = "Software Development"
     deadline: Optional[str] = ""
     applyLink: Optional[str] = ""

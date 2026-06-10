@@ -107,8 +107,12 @@ export default function Signup() {
         "Account created successfully"
       );
 
-      // Redirect to home page
-      navigate("/");
+      // Redirect to profile page
+      if (data.user.role === 'job_provider') {
+        navigate("/profile/recruiter");
+      } else {
+        navigate("/profile/candidate");
+      }
 
     } catch (error) {
       console.error(error);
