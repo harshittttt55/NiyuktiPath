@@ -33,6 +33,7 @@ export default function JobDetails() {
   useEffect(() => {
     window.scrollTo(0, 0);
     checkInitialStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkInitialStatus = async () => {

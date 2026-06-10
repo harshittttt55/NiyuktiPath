@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 import SectionTitle from '../components/SectionTitle';
-import Navbar from '../components/Navbar';
-import AnimatedCounter from '../components/AnimatedCounter';
 import DeviceShowcase from "../components/DeviceShowcase";
 
 import {
@@ -17,16 +15,6 @@ import {
   Vector2,
   Clock,
 } from 'three';
-
-// Assets (kept for future use)
-const PHONE_MOCKUP_URL = '/images/phone-mockup.png';
-const COMPANY_LOGOS = [
-  '/images/logo-google.png',
-  '/images/logo-microsoft.png',
-  '/images/logo-amazon.png',
-  '/images/logo-meta.png',
-  '/images/logo-apple.png',
-];
 
 // Animation Variants
 const fadeInUp = {
@@ -256,23 +244,6 @@ const PersonaCard = ({ role, title, description, benefits, cta, accent }) => (
   </motion.div>
 );
 
-const OpportunityCard = ({ title, description, tags, jobs, accent }) => (
-  <motion.div className="opportunity-card" style={{ borderTopColor: accent }} variants={fadeInUp}>
-    <div className="opportunity-header">
-      <h4>{title}</h4>
-      <span>{jobs}+ roles</span>
-    </div>
-    <p>{description}</p>
-    <div className="opportunity-tags">
-      {tags.map((tag) => (
-        <span key={tag} className="opportunity-chip">
-          {tag}
-        </span>
-      ))}
-    </div>
-  </motion.div>
-);
-
 const WorkflowStep = ({ step, title, description }) => (
   <motion.div className="workflow-card" variants={fadeInUp}>
     <div className="workflow-number">{step}</div>
@@ -306,38 +277,6 @@ const TestimonialCard = ({ quote, author, role }) => (
     </div>
   </motion.div>
 );
-
-// FAQ Item Component
-const FAQItem = ({ question, answer }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <motion.div className={`faq-item ${isOpen ? 'open' : ''}`} variants={fadeInUp}>
-      <button
-        className="faq-question"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        type="button"
-      >
-        <h4>{question}</h4>
-        <motion.span
-          className="faq-toggle"
-          animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          +
-        </motion.span>
-      </button>
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-        className="faq-answer"
-      >
-        <p>{answer}</p>
-      </motion.div>
-    </motion.div>
-  );
-};
 
 const features = [
   { title: 'Dual dashboards', description: 'Switch between seeker insights and provider controls in a single click.', icon: '🧭' },
@@ -404,37 +343,6 @@ const personaCards = [
   },
 ];
 
-const opportunityCategories = [
-  {
-    title: 'Product Engineering',
-    description: 'Autonomous teams shaping AI-native experiences for global audiences.',
-    tags: ['Remote', 'Senior', 'Innovation'],
-    jobs: 180,
-    accent: '#ffb347',
-  },
-  {
-    title: 'Design & UX',
-    description: 'Inclusive design squads needing storytellers and system thinkers.',
-    tags: ['Hybrid', 'Portfolio', 'Collaboration'],
-    jobs: 95,
-    accent: '#8fd3f4',
-  },
-  {
-    title: 'Sales & GTM',
-    description: 'High-energy teams building growth engines and partnerships.',
-    tags: ['Field', 'Leadership', 'Target driven'],
-    jobs: 120,
-    accent: '#f78da7',
-  },
-  {
-    title: 'Internships',
-    description: 'Mentored internships with real ownership and mentorship.',
-    tags: ['Early-career', 'Stipend', 'Mentorship'],
-    jobs: 210,
-    accent: '#6a82fb',
-  },
-];
-
 const workflowSteps = [
   {
     step: '01',
@@ -454,24 +362,6 @@ const workflowSteps = [
 ];
 
 const heroFilters = ['Remote friendly', 'Hybrid-ready', 'ATS proof', 'Early-career'];
-
-const faqs = [
-  {
-    question: 'How does the dual experience work?',
-    answer:
-      'During signup or in the dashboard you can toggle between job seeker and job provider views. Each view surfaces tailored tools, dashboards, and CTAs for the role you are operating in.',
-  },
-  {
-    question: 'What is the chat flow between seekers and providers?',
-    answer:
-      'After clicking Chat on a job, providers get a request checklist. Once they accept, both parties enter a half-screen chat pane and can continue the conversation without leaving the platform.',
-  },
-  {
-    question: 'How are ATS scores and jobs synced?',
-    answer:
-      'Every submission is run through our ATS analyzer. Providers see applicants ordered by score, and seekers get personalized tips before they apply. You can also re-run scans after updating your resume or job filters.',
-  },
-];
 
 const solutionCards = [
   {
@@ -507,34 +397,10 @@ const testimonials = [
 ];
 
 const Home = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('job seeker');
-  const [searchMessage, setSearchMessage] = useState('Curating the right matches for your journey.');
   const [activePulse, setActivePulse] = useState(0);
   const navigate = useNavigate();
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setSubscriptionStatus('error');
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSubscriptionStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscriptionStatus(null), 5000);
-    } catch (error) {
-      setSubscriptionStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   useEffect(() => {
     const timer = setInterval(() => {
