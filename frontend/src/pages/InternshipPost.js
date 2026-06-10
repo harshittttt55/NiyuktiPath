@@ -17,6 +17,7 @@ import {
   FaCalendarAlt,
   FaTags
 } from "react-icons/fa";
+import { BASE_URL } from "../utils/api";
 
 export default function InternshipPost() {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ export default function InternshipPost() {
 
       if (editInternshipData) {
         // UPDATE MODE
-        const response = await fetch(`http://localhost:8000/api/internships/${editInternshipData.id}`, {
+        const response = await fetch(`${BASE_URL}/internships/${editInternshipData.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -116,7 +117,7 @@ export default function InternshipPost() {
         navigate("/profile/recruiter");
       } else {
         // CREATE MODE
-        const response = await fetch("http://localhost:8000/api/internships/post", {
+        const response = await fetch(`${BASE_URL}/internships/post`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

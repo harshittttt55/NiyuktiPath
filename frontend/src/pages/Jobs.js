@@ -4,6 +4,7 @@ import "../styles/jobs.css";
 import { Link } from "react-router-dom";
 import DarkVeil from '../components/DarkVeil';
 import { motion } from "framer-motion";
+import { BASE_URL } from "../utils/api";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -13,7 +14,7 @@ export default function Jobs() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/jobs/all");
+        const response = await fetch(`${BASE_URL}/jobs/all`);
         if (!response.ok) throw new Error("Failed to connect to the server.");
         const data = await response.json();
         setJobs(data);

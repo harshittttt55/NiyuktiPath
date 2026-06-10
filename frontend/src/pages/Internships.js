@@ -3,6 +3,7 @@ import InternshipCard from "../components/InternshipCard";
 import "../styles/internships.css";
 import { Link } from "react-router-dom";
 import DarkVeil from '../components/DarkVeil';
+import { BASE_URL } from "../utils/api";
 
 export default function Internships() {
   const [internships, setInternships] = useState([]);
@@ -12,7 +13,7 @@ export default function Internships() {
   useEffect(() => {
     const fetchInternships = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/internships/all");
+        const response = await fetch(`${BASE_URL}/internships/all`);
         if (!response.ok) throw new Error("Failed to fetch internships");
         const data = await response.json();
         setInternships(data);

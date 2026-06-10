@@ -6,7 +6,7 @@ import {
   FaMoneyBillWave, FaPlus, FaInfoCircle, FaClock, FaUserTie,
   FaGlobe, FaLink, FaCalendarAlt, FaTags
 } from "react-icons/fa";
-import { API, getAuthenticatedData, putAuthenticatedData } from "../utils/api";
+import { API, getAuthenticatedData, putAuthenticatedData, BASE_URL } from "../utils/api";
 
 export default function PostJob() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default function PostJob() {
         navigate("/signin");
         return;
       }
-      
+
       const user = JSON.parse(storedUser);
       if (user.role === "job_seeker") {
         alert("Only recruiters can manage jobs.");
@@ -112,7 +112,7 @@ export default function PostJob() {
         }
       } else {
         // CREATE MODE
-        response = await fetch("http://localhost:8000/api/jobs/post", {
+        response = await fetch(`${BASE_URL}/jobs/post`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export default function PostJob() {
 
         const data = await response.json();
         if (!response.ok) throw new Error(data.detail || "Post failed");
-        
+
         alert("Job published successfully!");
         navigate("/profile/recruiter");
       }
@@ -146,7 +146,7 @@ export default function PostJob() {
       <section className="postjob-section">
         <div className="postjob-container">
           <form className="postjob-form" onSubmit={handleSubmit}>
-            
+
             <div className="form-section">
               <div className="section-header">
                 <FaInfoCircle className="section-icon" />
@@ -208,14 +208,14 @@ export default function PostJob() {
               </div>
               <div className="form-group">
                 <label>Skills</label>
-                <div className="skill-input" style={{display: 'flex', gap: '10px'}}>
+                <div className="skill-input" style={{ display: 'flex', gap: '10px' }}>
                   <input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && addSkill(e)} placeholder="Add a skill" />
-                  <button type="button" onClick={addSkill} className="add-skill-btn" style={{padding: '0 15px', background: '#0052CC', color: 'white', borderRadius: '4px'}}><FaPlus /></button>
+                  <button type="button" onClick={addSkill} className="add-skill-btn" style={{ padding: '0 15px', background: '#0052CC', color: 'white', borderRadius: '4px' }}><FaPlus /></button>
                 </div>
-                <div className="skill-list" style={{display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px'}}>
+                <div className="skill-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '10px' }}>
                   {skills.map((s, i) => (
-                    <span key={i} className="skill-tag" style={{background: '#EBECF0', padding: '4px 10px', borderRadius: '12px', fontSize: '13px'}}>
-                      {s} <span onClick={() => removeSkill(s)} style={{cursor: 'pointer', marginLeft: '5px', fontWeight: 'bold'}}>×</span>
+                    <span key={i} className="skill-tag" style={{ background: '#EBECF0', padding: '4px 10px', borderRadius: '12px', fontSize: '13px' }}>
+                      {s} <span onClick={() => removeSkill(s)} style={{ cursor: 'pointer', marginLeft: '5px', fontWeight: 'bold' }}>×</span>
                     </span>
                   ))}
                 </div>
@@ -223,11 +223,11 @@ export default function PostJob() {
             </div>
 
             <div className="form-footer">
-              <div className="preview-check" style={{display: 'flex', gap: '10px', marginBottom: '20px'}}>
+              <div className="preview-check" style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
                 <input type="checkbox" id="verify" checked={previewAccepted} onChange={() => setPreviewAccepted(!previewAccepted)} />
                 <label htmlFor="verify">I verify that these job details are correct.</label>
               </div>
-              {submitError && <p style={{color: 'red', marginBottom: '10px'}}>{submitError}</p>}
+              {submitError && <p style={{ color: 'red', marginBottom: '10px' }}>{submitError}</p>}
               <button type="submit" className="postjob-submit" disabled={!previewAccepted || isSubmitting}>
                 <FaRocket /> {isSubmitting ? "Processing..." : (editJobData ? "Update Job" : "Publish Job")}
               </button>

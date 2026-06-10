@@ -77,7 +77,7 @@ export default function Signin() {
 
         const response =
           await fetch(
-            "http://localhost:8000/api/auth/login",
+            `${process.env.REACT_APP_API_URL || "http://localhost:8000/api"}/auth/login`,
             {
               method: "POST",
               headers: {

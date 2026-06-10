@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "../styles/candidate-profile.css"; 
-import { 
+import "../styles/candidate-profile.css";
+import {
   FaBriefcase, FaEnvelope, FaBuilding, FaGlobe,
-  FaBell, FaTh, FaExclamationTriangle, FaTimes, FaSave, FaTrash, 
+  FaBell, FaTh, FaExclamationTriangle, FaTimes, FaSave, FaTrash,
   FaUserTie, FaListUl, FaEdit, FaGraduationCap, FaUsers, FaChevronDown,
   FaChevronUp, FaLinkedin, FaGithub, FaFileAlt, FaUserCircle
 } from "react-icons/fa";
@@ -128,9 +128,9 @@ export default function RecruiterProfile() {
     setLoading(true);
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    if (!token || !storedUser) { 
-      setLoading(false); 
-      return; 
+    if (!token || !storedUser) {
+      setLoading(false);
+      return;
     }
 
     const userData = JSON.parse(storedUser);
@@ -161,8 +161,8 @@ export default function RecruiterProfile() {
     }
   }, [filterJobs]);
 
-  useEffect(() => { 
-    fetchProfileAndJobs(); 
+  useEffect(() => {
+    fetchProfileAndJobs();
   }, [fetchProfileAndJobs]);
 
   const handleSave = async () => {
@@ -207,17 +207,17 @@ export default function RecruiterProfile() {
         </div>
         <div className="listing-actions">
           {type === 'job' ? (
-            <button className="manage-account-btn" style={{fontSize: '11px'}}
+            <button className="manage-account-btn" style={{ fontSize: '11px' }}
               onClick={() => navigate("/post-job", { state: { editJob: item } })}>
               <FaEdit /> Edit
             </button>
           ) : (
-            <button className="manage-account-btn" style={{fontSize: '11px'}}
+            <button className="manage-account-btn" style={{ fontSize: '11px' }}
               onClick={() => navigate("/internship-post", { state: { editInternship: item } })}>
               <FaEdit /> Edit
             </button>
           )}
-          <button className="manage-account-btn" style={{fontSize: '11px', color: '#DE350B'}}
+          <button className="manage-account-btn" style={{ fontSize: '11px', color: '#DE350B' }}
             onClick={() => type === 'job' ? handleDeleteJob(item.id) : handleDeleteInternship(item.id)}
             disabled={deletingId === item.id}>
             <FaTrash /> Delete
@@ -236,11 +236,11 @@ export default function RecruiterProfile() {
         <div className="navbar-left">
           <FaTh className="nav-grid-icon" />
           <span className="nav-logo-text">Recruiter Dashboard</span>
-          <Link to="/post-job" className="jira-create-btn" style={{textDecoration: 'none'}}>Post Job</Link>
+          <Link to="/post-job" className="jira-create-btn" style={{ textDecoration: 'none' }}>Post Job</Link>
         </div>
         <div className="navbar-right">
           <FaBell />
-          <div className="sl-avatar" style={{background: '#6554C0'}}>{profile?.full_name?.charAt(0)}</div>
+          <div className="sl-avatar" style={{ background: '#6554C0' }}>{profile?.full_name?.charAt(0)}</div>
         </div>
       </div>
 
@@ -269,9 +269,9 @@ export default function RecruiterProfile() {
               <div className="sidebar-item"><FaBuilding /> {profile?.company_name}</div>
               <div className="sidebar-item"><FaEnvelope /> {profile?.contact_email}</div>
             </section>
-            <section className="sidebar-section" style={{marginTop: '16px'}}>
+            <section className="sidebar-section" style={{ marginTop: '16px' }}>
               <h3>Overview</h3>
-              <div className="sidebar-item" style={{fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap'}}>
+              <div className="sidebar-item" style={{ fontSize: '13px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>
                 {profile?.company_description || "Add a company description..."}
               </div>
             </section>
@@ -281,10 +281,10 @@ export default function RecruiterProfile() {
             {/* Jobs */}
             <section className="panel-section">
               <div className="panel-section-header"><h2>Active Job Listings ({activeJobs.length})</h2></div>
-              <div className="activity-list-container" style={{padding: 0}}>
+              <div className="activity-list-container" style={{ padding: 0 }}>
                 {activeJobs.length > 0
                   ? activeJobs.map((job, idx) => <ListingCard key={idx} item={job} type="job" />)
-                  : <p style={{color: '#5E6C84', padding: '20px'}}>No jobs posted yet. <Link to="/post-job" style={{color:'#0052CC'}}>Post one.</Link></p>
+                  : <p style={{ color: '#5E6C84', padding: '20px' }}>No jobs posted yet. <Link to="/post-job" style={{ color: '#0052CC' }}>Post one.</Link></p>
                 }
               </div>
             </section>
@@ -292,10 +292,10 @@ export default function RecruiterProfile() {
             {/* Internships */}
             <section className="panel-section">
               <div className="panel-section-header"><h2>Active Internships ({activeInternships.length})</h2></div>
-              <div className="activity-list-container" style={{padding: 0}}>
+              <div className="activity-list-container" style={{ padding: 0 }}>
                 {activeInternships.length > 0
                   ? activeInternships.map((internship, idx) => <ListingCard key={idx} item={internship} type="internship" />)
-                  : <p style={{color: '#5E6C84', padding: '20px'}}>No internships posted yet. <Link to="/post-internship" style={{color:'#0052CC'}}>Post one.</Link></p>
+                  : <p style={{ color: '#5E6C84', padding: '20px' }}>No internships posted yet. <Link to="/post-internship" style={{ color: '#0052CC' }}>Post one.</Link></p>
                 }
               </div>
             </section>
@@ -311,16 +311,16 @@ export default function RecruiterProfile() {
             <div className="modal-body">
               <div className="modal-grid-2">
                 <div className="modal-col">
-                  <div className="form-group"><label>Profile Pic URL</label><input value={editData.avatar_url || ""} onChange={e => setEditData({...editData, avatar_url: e.target.value})} /></div>
-                  <div className="form-group"><label>Full Name</label><input value={editData.full_name || ""} onChange={e => setEditData({...editData, full_name: e.target.value})} /></div>
+                  <div className="form-group"><label>Profile Pic URL</label><input value={editData.avatar_url || ""} onChange={e => setEditData({ ...editData, avatar_url: e.target.value })} /></div>
+                  <div className="form-group"><label>Full Name</label><input value={editData.full_name || ""} onChange={e => setEditData({ ...editData, full_name: e.target.value })} /></div>
                 </div>
                 <div className="modal-col">
-                  <div className="form-group"><label>Company Name</label><input value={editData.company_name || ""} onChange={e => setEditData({...editData, company_name: e.target.value})} /></div>
-                  <div className="form-group"><label>Designation</label><input value={editData.designation || ""} onChange={e => setEditData({...editData, designation: e.target.value})} /></div>
+                  <div className="form-group"><label>Company Name</label><input value={editData.company_name || ""} onChange={e => setEditData({ ...editData, company_name: e.target.value })} /></div>
+                  <div className="form-group"><label>Designation</label><input value={editData.designation || ""} onChange={e => setEditData({ ...editData, designation: e.target.value })} /></div>
                 </div>
               </div>
-              <div className="form-group"><label>Website</label><input value={editData.company_website || ""} onChange={e => setEditData({...editData, company_website: e.target.value})} /></div>
-              <div className="form-group"><label>Description</label><textarea rows="4" value={editData.company_description || ""} onChange={e => setEditData({...editData, company_description: e.target.value})} /></div>
+              <div className="form-group"><label>Website</label><input value={editData.company_website || ""} onChange={e => setEditData({ ...editData, company_website: e.target.value })} /></div>
+              <div className="form-group"><label>Description</label><textarea rows="4" value={editData.company_description || ""} onChange={e => setEditData({ ...editData, company_description: e.target.value })} /></div>
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" onClick={() => setIsEditing(false)}>Cancel</button>

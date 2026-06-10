@@ -69,7 +69,7 @@ export default function Signup() {
 
       const response =
         await fetch(
-          "http://localhost:8000/api/auth/signup",
+          `${process.env.REACT_APP_API_URL || "http://localhost:8000/api"}/auth/signup`,
           {
             method: "POST",
             headers: {
