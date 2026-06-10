@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/candidate-profile.css";
 import {
-  FaBriefcase, FaEnvelope, FaBuilding, FaGlobe,
-  FaBell, FaTh, FaExclamationTriangle, FaTimes, FaSave, FaTrash,
+  FaEnvelope, FaBuilding, FaGlobe,
+  FaBell, FaTh, FaTimes, FaSave, FaTrash,
   FaUserTie, FaListUl, FaEdit, FaGraduationCap, FaUsers, FaChevronDown,
   FaChevronUp, FaLinkedin, FaGithub, FaFileAlt, FaUserCircle
 } from "react-icons/fa";

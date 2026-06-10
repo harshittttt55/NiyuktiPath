@@ -21,7 +21,7 @@ export default function CandidateProfile() {
 
   useEffect(() => {
     fetchProfile();
-  }, [userId]);
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchProfile = async () => {
     setLoading(true);
