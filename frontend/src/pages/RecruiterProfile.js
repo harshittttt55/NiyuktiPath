@@ -104,11 +104,9 @@ function ApplicantsDrawer({ listingId, listingTitle }) {
 export default function RecruiterProfile() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [allJobs, setAllJobs] = useState([]);
   const [activeJobs, setActiveJobs] = useState([]);
   const [activeInternships, setActiveInternships] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({});
   const [deletingId, setDeletingId] = useState(null);
@@ -126,11 +124,14 @@ export default function RecruiterProfile() {
     return [];
   }, []);
 
-  const fetchProfileAndJobs = async () => {
+  const fetchProfileAndJobs = useCallback(async () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
-    if (!token || !storedUser) { setError("missing_token"); setLoading(false); return; }
+    if (!token || !storedUser) { 
+      setLoading(false); 
+      return; 
+    }
 
     const userData = JSON.parse(storedUser);
     const userId = userData.id || userData._id;
@@ -147,23 +148,22 @@ export default function RecruiterProfile() {
         ]);
 
         if (Array.isArray(jobsData)) {
-          setAllJobs(jobsData);
           setActiveJobs(filterJobs(jobsData, profData.company_name, userId));
         }
         if (Array.isArray(internshipsData)) {
           setActiveInternships(filterJobs(internshipsData, profData.company_name, userId));
         }
-      } else {
-        setError(profData?.detail || "Could not fetch profile");
       }
     } catch (err) {
-      setError("Failed to load recruiter data.");
+      console.error("Failed to load recruiter data:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterJobs]);
 
-  useEffect(() => { fetchProfileAndJobs(); }, []);
+  useEffect(() => { 
+    fetchProfileAndJobs(); 
+  }, [fetchProfileAndJobs]);
 
   const handleSave = async () => {
     const updated = await putAuthenticatedData(API.PROFILE, editData);
