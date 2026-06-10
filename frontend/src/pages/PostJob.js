@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/post-job.css";
 import {
-  FaRocket, FaBriefcase, FaBuilding, FaEnvelope, FaMapMarkerAlt,
-  FaMoneyBillWave, FaPlus, FaInfoCircle, FaClock, FaUserTie,
-  FaGlobe, FaLink, FaCalendarAlt, FaTags
+  FaRocket, FaBriefcase, FaBuilding,
+  FaPlus, FaInfoCircle, FaClock,
+  FaTags
 } from "react-icons/fa";
 import { API, getAuthenticatedData, putAuthenticatedData, BASE_URL } from "../utils/api";
 

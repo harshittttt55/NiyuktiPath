@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/home.css';
 import SectionTitle from '../components/SectionTitle';
-import Navbar from '../components/Navbar';
-import AnimatedCounter from '../components/AnimatedCounter';
 import DeviceShowcase from "../components/DeviceShowcase";
 
 import {
@@ -17,16 +15,6 @@ import {
   Vector2,
   Clock,
 } from 'three';
-
-// Assets (kept for future use)
-const PHONE_MOCKUP_URL = '/images/phone-mockup.png';
-const COMPANY_LOGOS = [
-  '/images/logo-google.png',
-  '/images/logo-microsoft.png',
-  '/images/logo-amazon.png',
-  '/images/logo-meta.png',
-  '/images/logo-apple.png',
-];
 
 // Animation Variants
 const fadeInUp = {
@@ -256,7 +244,7 @@ const PersonaCard = ({ role, title, description, benefits, cta, accent }) => (
   </motion.div>
 );
 
-const OpportunityCard = ({ title, description, tags, jobs, accent }) => (
+const OpportunityCard = ({ title, description, tags, jobs, accent }) => ( // eslint-disable-line no-unused-vars
   <motion.div className="opportunity-card" style={{ borderTopColor: accent }} variants={fadeInUp}>
     <div className="opportunity-header">
       <h4>{title}</h4>
@@ -308,6 +296,7 @@ const TestimonialCard = ({ quote, author, role }) => (
 );
 
 // FAQ Item Component
+// eslint-disable-next-line no-unused-vars
 const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -404,6 +393,7 @@ const personaCards = [
   },
 ];
 
+// eslint-disable-next-line no-unused-vars
 const opportunityCategories = [
   {
     title: 'Product Engineering',
@@ -455,6 +445,7 @@ const workflowSteps = [
 
 const heroFilters = ['Remote friendly', 'Hybrid-ready', 'ATS proof', 'Early-career'];
 
+// eslint-disable-next-line no-unused-vars
 const faqs = [
   {
     question: 'How does the dual experience work?',
@@ -507,34 +498,10 @@ const testimonials = [
 ];
 
 const Home = () => {
-  const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('job seeker');
-  const [searchMessage, setSearchMessage] = useState('Curating the right matches for your journey.');
   const [activePulse, setActivePulse] = useState(0);
   const navigate = useNavigate();
-
-  const handleSubscribe = async (e) => {
-    e.preventDefault();
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setSubscriptionStatus('error');
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSubscriptionStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscriptionStatus(null), 5000);
-    } catch (error) {
-      setSubscriptionStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   useEffect(() => {
     const timer = setInterval(() => {

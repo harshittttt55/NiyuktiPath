@@ -64,10 +64,10 @@ export default function Contact() {
               </div>
 
               <div className="social-links">
-                <a href="#" className="social-btn"><FaTwitter /></a>
-                <a href="#" className="social-btn"><FaLinkedinIn /></a>
-                <a href="#" className="social-btn"><FaGithub /></a>
-                <a href="#" className="social-btn"><FaInstagram /></a>
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="social-btn"><FaTwitter /></a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="social-btn"><FaLinkedinIn /></a>
+                <a href="https://github.com" target="_blank" rel="noreferrer" className="social-btn"><FaGithub /></a>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-btn"><FaInstagram /></a>
               </div>
             </motion.div>
 

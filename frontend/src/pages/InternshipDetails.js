@@ -33,7 +33,7 @@ export default function InternshipDetails() {
   useEffect(() => {
     window.scrollTo(0, 0);
     checkInitialStatus();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkInitialStatus = async () => {
     const token = localStorage.getItem("token");
