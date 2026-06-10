@@ -1,8 +1,7 @@
 // 📁 src/utils/api.js
 
 // 🔗 Base URL for your backend API
-// Update this when backend is ready:
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000/api";
 
 // Common API endpoints
 export const API = {

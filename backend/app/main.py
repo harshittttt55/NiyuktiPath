@@ -22,6 +22,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
+    "*", # Allow all for now during deployment phase, or add your specific vercel.app URL later
 ]
 
 app.add_middleware(
